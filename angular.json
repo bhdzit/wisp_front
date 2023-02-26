@@ -35,7 +35,10 @@
               "src/assets/plugins/fontawesome-free/css/all.min.css",
               "src/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/plugins/jquery/jquery.min.js",
+              "src/assets/js/adminlte.min.js"
+            ]
           },
           "configurations": {
             "production": {
