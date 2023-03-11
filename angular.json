@@ -30,7 +30,7 @@
               "src/assets/css"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/purple-green.css",
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.css",
               "src/assets/css/adminlte.min.css",
               "src/assets/plugins/fontawesome-free/css/all.min.css",
