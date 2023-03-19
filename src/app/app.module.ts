@@ -9,15 +9,22 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AllHttpInterceptor } from './allhttp.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { TorreComponent } from './componentes/torre/torre.component';
+import { TorreInfoComponent } from './componentes/torre/torre-info/torre-info.component';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import { MapViewComponent } from './shared-componentes/map-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    TorreComponent
+    TorreComponent,
+    TorreInfoComponent,
+    MapViewComponent
   ],
   imports: [
     BrowserModule,
@@ -25,9 +32,15 @@ import { TorreComponent } from './componentes/torre/torre.component';
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
-    MatTableModule
+    MatTableModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
-  providers: [AllHttpInterceptor],
+  providers: [AllHttpInterceptor, {
+    provide: MatDialogRef,
+    useValue: {}
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

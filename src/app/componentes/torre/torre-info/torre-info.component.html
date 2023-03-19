@@ -1,0 +1,38 @@
+<div class="row ml-2 mr-2 mt-4 mb-4">
+    <div class="col-sm-6">
+        <div class="input-group has-validation">
+            <div class="input-group-prepend">
+                <button class="btn btn-dark" type="button">Nombre</button>
+            </div>
+            <input [(ngModel)]="torre.nombre" type="text" class="form-control"
+                [ngClass]="{'is-invalid':submitErrorMsg['nombre']}" placeholder="" aria-label=""
+                aria-describedby="basic-addon1">
+            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                El nombre es Obligatoria
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="input-group has-validation">
+            <div class="input-group-prepend">
+                <button class="btn btn-dark" type="button">Altura</button>
+            </div>
+            <input [(ngModel)]="torre.altura" type="number" class="form-control "
+                [ngClass]="{'is-invalid':submitErrorMsg['altura']}" placeholder="" aria-label=""
+                aria-describedby="basic-addon1">
+            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                La Altura es Obligatoria
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <app-map-view (coordsChangeEvent)="coordsChangeEvent($event)" [torre]="torre"></app-map-view>
+        <div id="validationServerUsernameFeedback" class="invalid-feedback " [ngClass]="{'d-inline':submitErrorMsg['lat']}">
+            La Altura es Obligatoria
+        </div>
+    </div>
+
+
+    <button (click)="guardarTorre()" type="submit" class="btn btn-primary ml-1">Guardar</button>
+</div>
