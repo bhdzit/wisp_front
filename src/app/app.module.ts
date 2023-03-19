@@ -16,6 +16,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { MapViewComponent } from './shared-componentes/map-view.component';
+import { SectorComponent } from './componentes/sector/sector.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MapViewComponent } from './shared-componentes/map-view.component';
     HomeComponent,
     TorreComponent,
     TorreInfoComponent,
-    MapViewComponent
+    MapViewComponent,
+    SectorComponent
   ],
   imports: [
     BrowserModule,

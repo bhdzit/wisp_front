@@ -4,6 +4,7 @@ import { RouterModule, Routes, CanActivate } from '@angular/router';
 import { AllHttpInterceptor } from './allhttp.interceptor';
 import { HomeComponent } from './componentes/home/home.component';
 import { LoginComponent } from './componentes/login/login.component';
+import { SectorComponent } from './componentes/sector/sector.component';
 import { TorreComponent } from './componentes/torre/torre.component';
 import { AuthService } from './services/auth.services';
 
@@ -17,6 +18,10 @@ const routes: Routes = [
       {
         path: 'torre',
         component: TorreComponent,
+      },
+      {
+        path: 'sector',
+        component: SectorComponent,
       }
     ]
   },
