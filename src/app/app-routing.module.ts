@@ -6,6 +6,7 @@ import { HomeComponent } from './componentes/home/home.component';
 import { LoginComponent } from './componentes/login/login.component';
 import { SectorComponent } from './componentes/sector/sector.component';
 import { TorreComponent } from './componentes/torre/torre.component';
+import { DeactivateGuard } from './deactivate-guard';
 import { AuthService } from './services/auth.services';
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
   {
     path: '', component: HomeComponent,
     canActivate: [AuthService],
+    canDeactivate: [DeactivateGuard],
     children: [
       {
         path: 'torre',
@@ -22,6 +24,7 @@ const routes: Routes = [
       {
         path: 'sector',
         component: SectorComponent,
+        canDeactivate: [DeactivateGuard],
       }
     ]
   },
