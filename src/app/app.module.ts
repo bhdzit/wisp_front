@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { MapViewComponent } from './shared-componentes/map-view.component';
 import { SectorComponent } from './componentes/sector/sector.component';
+import { DeactivateGuard } from './deactivate-guard';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { SectorComponent } from './componentes/sector/sector.component';
     MatFormFieldModule,
     MatSelectModule
   ],
-  providers: [AllHttpInterceptor, {
+  providers: [AllHttpInterceptor,DeactivateGuard, {
     provide: MatDialogRef,
     useValue: {}
   }],
