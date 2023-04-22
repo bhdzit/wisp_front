@@ -7,6 +7,7 @@ import { LoginComponent } from './componentes/login/login.component';
 import { SectorComponent } from './componentes/sector/sector.component';
 import { TorreComponent } from './componentes/torre/torre.component';
 import { DeactivateGuard } from './deactivate-guard';
+import { PaquetesComponent } from './componentes/paquetes/paquetes.component';
 import { AuthService } from './services/auth.services';
 
 const routes: Routes = [
@@ -24,6 +25,11 @@ const routes: Routes = [
       {
         path: 'sector',
         component: SectorComponent,
+        canDeactivate: [DeactivateGuard],
+      },
+      {
+        path: 'paquete',
+        component: PaquetesComponent,
         canDeactivate: [DeactivateGuard],
       }
     ]
