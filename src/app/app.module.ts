@@ -21,6 +21,7 @@ import { DeactivateGuard } from './deactivate-guard';
 import { PaquetesComponent } from './componentes/paquetes/paquetes.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { ClientesComponent } from './componentes/clientes/clientes.component';
+import { ClientesInfoComponent } from './componentes/clientes/clientes-info/clientes-info.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { ClientesComponent } from './componentes/clientes/clientes.component';
     SectorComponent,
     PaquetesComponent,
     ClientesComponent,
+    ClientesInfoComponent
 
   ],
   imports: [
