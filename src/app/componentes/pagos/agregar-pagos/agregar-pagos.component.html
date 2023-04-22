@@ -1,1 +1,226 @@
-<p>agregar-pagos works!</p>
+<script src="https://kit.fontawesome.com/015cfc4544.js" crossorigin="anonymous"></script>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Pagos</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Agregar Pagos</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<!-- Main content -->
+<section class="content">
+
+
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header border-0">
+                <div class="d-flex justify-content-between">
+                    <h3 class="card-title">Agregar Pago</h3>
+                </div>
+            </div>
+            <div class="card-header border-0">
+                <div class="d-flex justify-content-between">
+                    <div class="col-sm-6">
+                        <input id="clientInput" class="form-control" placeholder="Cliente" list="clientes" value="">
+                        <datalist id="clientes">
+                            <option id="1" value="EDUARDO  AVILES CALVA">
+                            </option>
+                            <option id="3" value="VERENICE  CALVA RODRIGUEZ">
+                            </option>
+                            <option id="4" value="HUITZI LESLI  MARTINEZ VALDEZ">
+                            </option>
+                            <option id="5" value="GILBERTO  PACHECO">
+                            </option>
+                            <option id="6" value="YARET YANIN  CHAVEZ PEREZ">
+                            </option>
+                            <option id="7" value="BENITO  SERRANO JUAREZ">
+                            </option>
+                            <option id="8" value="ESTELA  NIETO CHAVERO">
+                            </option>
+                            <option id="9" value="CLAUDIA  HERNANDEZ">
+                            </option>
+                            <option id="10" value="MIRIAM  MARTINEZ RIVERA">
+                            </option>
+                            <option id="11" value="CESAR  AMADOR">
+                            </option>
+                            <option id="12" value="HECTOR  CHAVEZ">
+                            </option>
+                            <option id="13" value="GABRIELA  CORONA">
+                            </option>
+                            <option id="14" value="AMALIA  TIRADO">
+                            </option>
+                            <option id="18" value="GLORIA  CRUZ TREJO">
+                            </option>
+                        </datalist>
+
+                    </div>
+                    <button style="margin-right: 30px;" href="pagos\agregarpago" class="btn btn-primary pull-right"
+                        onclick="scanQR()">Escaner QR</button>
+                </div>
+
+            </div>
+            <div class="box ml-3 mr-5"></div>
+            <div class="card-header ">
+                <div class="d-flex justify-content-between">
+                    <h3 class="col-9 card-title">Realizar Pago</h3>
+                    <div class="col-3">
+                        <button class="btn btn-success pull-right mr-2" href=""><i class="fas fa-plus"
+                                aria-hidden="true"></i></button>
+                        <button class="btn btn-success pull-right ">Realizar pago</button>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <tbody id="creditosTable"></tbody>
+
+
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Mes</th>
+                            <th>Paquete</th>
+                            <th>METODO de Pago
+                            </th>
+                            <th style="width: 80px">Costo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payTable">
+                        <tr id="payOptions">
+                            <td style="width: 30px"> <i id="eliminar" style="color:#F00;margin-top: 10px;"
+                                    class="fas fa-minus-circle" aria-hidden="true"></i><input type="number"
+                                    id="serviceId" name="serviceId" hidden=""></td>
+                            <td class="todo-list ui-sortable"> <select class="form-control" id="payMonth"
+                                    name="payMonth1">
+                                    <option value="1">ENE</option>
+                                    <option value="2">FEB</option>
+                                    <option value="3">MAR</option>
+                                    <option value="4">ABR</option>
+                                    <option value="5">MAY</option>
+                                    <option value="6">JUN</option>
+                                    <option value="7">JUL</option>
+                                    <option value="8">AGO</option>
+                                    <option value="9">SEP</option>
+                                    <option value="10">OCT</option>
+                                    <option value="11">NOV</option>
+                                    <option value="12">DIC</option>
+                                </select> </td>
+                            <td> <select class="form-control pkgClient" id="pkgClient" name="pkgClient1">
+                                    <option value="1">FAMILIAR</option>
+                                    <option value="2">PLUS</option>
+                                    <option value="3">TORRES</option>
+                                    <option value="4">ESCUELA</option>
+                                    <option value="5">GRATIS</option>
+                                    <option value="6">MMM</option>
+                                    <option value="7">BASICO</option>
+                                </select> </td>
+                            <td><select class="form-control" id="payMethod" onchange="payMethodChange(this)"
+                                    name="payMethod1">
+                                    <option value="1">Efectivo</option>
+                                    <option value="2">Deposito</option>
+                                </select></td>
+                            <td><b>$<input name="pay1" style="border: 0;width: 50px;" id="payMoney" type="text"
+                                        readonly=""></b></td>
+                        </tr>
+                    </tbody>
+
+                    <tbody class="d-none">
+                        <tr id="depositRow">
+                            <td colspan="3">
+                                <!-- radio -->
+                                <div class="form-group">
+                                    <label class="">
+                                        <div class="iradio_flat-blue checked" aria-checked="false" aria-disabled="false"
+                                            style="position: relative;"><input type="radio" name="r3" class="flat-red"
+                                                value="OXXO" checked="" style="position: absolute; opacity: 0;"><ins
+                                                class="iCheck-helper"
+                                                style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                                        </div>
+                                        OXXO
+                                    </label>
+                                    <label class="">
+                                        <div class="iradio_flat-blue" aria-checked="false" aria-disabled="false"
+                                            style="position: relative;"><input type="radio" name="r3" class="flat-red"
+                                                value="BANAMEX" style="position: absolute; opacity: 0;"><ins
+                                                class="iCheck-helper"
+                                                style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                                        </div>
+                                        BANAMEX
+                                    </label>
+                                    <label class="">
+                                        <div class="iradio_flat-blue" aria-checked="false" aria-disabled="false"
+                                            style="position: relative;"><input type="radio" name="r3" class="flat-red"
+                                                value="BANCOPPEL" style="position: absolute; opacity: 0;"><ins
+                                                class="iCheck-helper"
+                                                style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                                        </div>
+                                        BANCOPPEL
+                                    </label>
+                                </div>
+                            </td>
+                            <td colspan="2">
+                                <input type="datetime-local" name="depositDate" id="depositDate"
+                                    class="form-control pull-right" required="required">
+                            </td>
+
+                        </tr>
+                    </tbody>
+                    <thead class="d-none">
+                        <tr>
+                            <th colspan="3">Extras</th>
+                            <th colspan="2">
+                                <div class="form-group">
+                                    <input type="button" id="btnAddNote" onclick="addNote()" style="margin-right: 10px;"
+                                        class="btn btn-success pull-right" value="Agregar Nota" disabled="">
+                                    <input type="button" onclick="addExtra()" style="margin-right: 10px;"
+                                        class="btn btn-success pull-right" value="Agregar Extra">
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="extratbody" class="d-none">
+
+
+
+                        <tr>
+                            <td colspan="3"> <input placeholder="Desscripcion" class="form-control" name="descripcion1">
+                            </td>
+                            <td colspan="3"> <input onchange="setTotal()" placeholder="Costo"
+                                    class="form-control extrasClient" name="costo1"> </td>
+                        </tr>
+                    </tbody>
+                    <tbody id="notebody" class="d-none">
+
+                        <tr>
+                            <td colspan="5">
+                                <div class="form-group"> <textarea placeholder="Nota" class="form-control"
+                                        name="nota1"></textarea> </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4"><b>TOTAL : </b></td>
+                            <td><b id="totalPay">$ 323</b></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
