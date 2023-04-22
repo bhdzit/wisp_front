@@ -12,6 +12,7 @@ import { AuthService } from './services/auth.services';
 import { ClientesComponent } from './componentes/clientes/clientes.component';
 import { AgregarPagosComponent } from './componentes/pagos/agregar-pagos/agregar-pagos.component';
 import { PagosMesComponent } from './componentes/pagos/pagos-mes/pagos-mes.component';
+import { ReportePagosComponent } from './componentes/pagos/reporte-pagos/reporte-pagos.component';
 
 const routes: Routes = [
 
@@ -48,6 +49,11 @@ const routes: Routes = [
       {
         path: 'pagos/pago_mes',
         component: PagosMesComponent,
+        canDeactivate: [DeactivateGuard],
+      },
+      {
+        path: 'pagos/reporte_pago',
+        component: ReportePagosComponent,
         canDeactivate: [DeactivateGuard],
       }
     ]

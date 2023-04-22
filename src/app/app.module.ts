@@ -24,6 +24,7 @@ import { ClientesComponent } from './componentes/clientes/clientes.component';
 import { ClientesInfoComponent } from './componentes/clientes/clientes-info/clientes-info.component';
 import { AgregarPagosComponent } from './componentes/pagos/agregar-pagos/agregar-pagos.component';
 import { PagosMesComponent } from './componentes/pagos/pagos-mes/pagos-mes.component';
+import { ReportePagosComponent } from './componentes/pagos/reporte-pagos/reporte-pagos.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { PagosMesComponent } from './componentes/pagos/pagos-mes/pagos-mes.compo
     ClientesComponent,
     ClientesInfoComponent,
     AgregarPagosComponent,
-    PagosMesComponent
+    PagosMesComponent,
+    ReportePagosComponent
 
   ],
   imports: [
