@@ -10,6 +10,7 @@ import { DeactivateGuard } from './deactivate-guard';
 import { PaquetesComponent } from './componentes/paquetes/paquetes.component';
 import { AuthService } from './services/auth.services';
 import { ClientesComponent } from './componentes/clientes/clientes.component';
+import { AgregarPagosComponent } from './componentes/pagos/agregar-pagos/agregar-pagos.component';
 
 const routes: Routes = [
 
@@ -36,6 +37,11 @@ const routes: Routes = [
       {
         path: 'cliente',
         component: ClientesComponent,
+        canDeactivate: [DeactivateGuard],
+      },
+      {
+        path: 'pagos/agregar_pago',
+        component: AgregarPagosComponent,
         canDeactivate: [DeactivateGuard],
       }
     ]
