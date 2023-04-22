@@ -9,6 +9,7 @@ import { TorreComponent } from './componentes/torre/torre.component';
 import { DeactivateGuard } from './deactivate-guard';
 import { PaquetesComponent } from './componentes/paquetes/paquetes.component';
 import { AuthService } from './services/auth.services';
+import { ClientesComponent } from './componentes/clientes/clientes.component';
 
 const routes: Routes = [
 
@@ -30,6 +31,11 @@ const routes: Routes = [
       {
         path: 'paquete',
         component: PaquetesComponent,
+        canDeactivate: [DeactivateGuard],
+      },
+      {
+        path: 'cliente',
+        component: ClientesComponent,
         canDeactivate: [DeactivateGuard],
       }
     ]

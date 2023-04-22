@@ -19,7 +19,9 @@ import { MapViewComponent } from './shared-componentes/map-view.component';
 import { SectorComponent } from './componentes/sector/sector.component';
 import { DeactivateGuard } from './deactivate-guard';
 import { PaquetesComponent } from './componentes/paquetes/paquetes.component';
-import {MatPaginatorModule} from '@angular/material/paginator'
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { ClientesComponent } from './componentes/clientes/clientes.component';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import {MatPaginatorModule} from '@angular/material/paginator'
     TorreInfoComponent,
     MapViewComponent,
     SectorComponent,
-    PaquetesComponent
+    PaquetesComponent,
+    ClientesComponent,
+
   ],
   imports: [
     BrowserModule,
