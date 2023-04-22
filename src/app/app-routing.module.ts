@@ -11,6 +11,7 @@ import { PaquetesComponent } from './componentes/paquetes/paquetes.component';
 import { AuthService } from './services/auth.services';
 import { ClientesComponent } from './componentes/clientes/clientes.component';
 import { AgregarPagosComponent } from './componentes/pagos/agregar-pagos/agregar-pagos.component';
+import { PagosMesComponent } from './componentes/pagos/pagos-mes/pagos-mes.component';
 
 const routes: Routes = [
 
@@ -42,6 +43,11 @@ const routes: Routes = [
       {
         path: 'pagos/agregar_pago',
         component: AgregarPagosComponent,
+        canDeactivate: [DeactivateGuard],
+      },
+      {
+        path: 'pagos/pago_mes',
+        component: PagosMesComponent,
         canDeactivate: [DeactivateGuard],
       }
     ]

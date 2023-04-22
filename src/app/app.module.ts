@@ -23,6 +23,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { ClientesComponent } from './componentes/clientes/clientes.component';
 import { ClientesInfoComponent } from './componentes/clientes/clientes-info/clientes-info.component';
 import { AgregarPagosComponent } from './componentes/pagos/agregar-pagos/agregar-pagos.component';
+import { PagosMesComponent } from './componentes/pagos/pagos-mes/pagos-mes.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { AgregarPagosComponent } from './componentes/pagos/agregar-pagos/agregar
     PaquetesComponent,
     ClientesComponent,
     ClientesInfoComponent,
-    AgregarPagosComponent
+    AgregarPagosComponent,
+    PagosMesComponent
 
   ],
   imports: [
