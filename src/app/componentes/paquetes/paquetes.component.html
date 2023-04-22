@@ -1,0 +1,189 @@
+<script src="https://kit.fontawesome.com/015cfc4544.js" crossorigin="anonymous"></script>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Paquetes</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Paquetes</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card ml-3 mr-3">
+        <div class="card-header">
+            <h3 class="card-title">Lista de Paquetes</h3>
+            
+            <div class="card-tools">
+             
+            </div>
+            
+
+            <div class="card-tools">
+               <div class="search-input mr-3">
+                <div class="input-group ">
+                    <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                      aria-describedby="basic-addon2" (keyup)="filtrado($event)" [(ngModel)]="filtradoTxt">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>  
+              
+
+                <button (click)="descartarClick()" type="button" class="btn btn-info mr-2">
+                    <i class="fas fa-undo-alt"></i>
+                </button>
+
+                <button (click)="saveClick()" type="button" class="btn btn-warning mr-2">
+                    <i class="fas fa-save"></i>
+                </button>
+
+                <button (click)="agregarSector()" type="button" class="btn btn-success">
+                    <i class="fas fa-plus"></i>
+                </button>
+
+            </div>
+
+
+        </div>
+        <div class="card-body">
+
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <!-- Position Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef> No. </th>
+                    <td mat-cell *matCellDef="let element;let i=index"> {{i+1}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td (click)="selectedInput='nombre'+i" mat-cell *matCellDef="let element;let i=index">
+                        <div [hidden]="selectedInput=='nombre'+i"> {{element.name}}</div>
+
+                        <div [hidden]="selectedInput!='nombre'+i" class="input-group has-validation">
+                            <input [(ngModel)]="element.name" type="text" class="form-control "
+                                (blur)="selectedInput='';element.editada=true"
+                                [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
+                                aria-describedby="basic-addon1">
+                            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                El nombre es Obligatorio
+                            </div>
+                        </div>
+
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="tx">
+                    <th mat-header-cell *matHeaderCellDef> TX </th>
+                    <td (click)="selectedInput='tx'+i" mat-cell *matCellDef="let element;let i=index">
+                        <div [hidden]="selectedInput=='tx'+i"> {{element.tx}}</div>
+
+                        <div [hidden]="selectedInput!='tx'+i" class="input-group has-validation">
+                            <input [(ngModel)]="element.tx" type="text" class="form-control "
+                                (blur)="selectedInput='';element.editada=true"
+                                [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
+                                aria-describedby="basic-addon1">
+                            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                El tx es Obligatorio
+                            </div>
+                        </div>
+
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="rx">
+                    <th mat-header-cell *matHeaderCellDef> RX </th>
+                    <td (click)="selectedInput='rx'+i" mat-cell *matCellDef="let element;let i=index">
+                        <div [hidden]="selectedInput=='rx'+i"> {{element.rx}}</div>
+
+                        <div [hidden]="selectedInput!='rx'+i" class="input-group has-validation">
+                            <input [(ngModel)]="element.rx" type="text" class="form-control "
+                                (blur)="selectedInput='';element.editada=true"
+                                [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
+                                aria-describedby="basic-addon1">
+                            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                El rx es Obligatorio
+                            </div>
+                        </div>
+
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="precio">
+                    <th mat-header-cell *matHeaderCellDef> Precio </th>
+                    <td (click)="selectedInput='precio'+i" mat-cell *matCellDef="let element;let i=index">
+                        <div [hidden]="selectedInput=='precio'+i"> {{element.precio}}</div>
+
+                        <div [hidden]="selectedInput!='precio'+i" class="input-group has-validation">
+                            <input [(ngModel)]="element.precio" type="text" class="form-control "
+                                (blur)="selectedInput='';element.editada=true"
+                                [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
+                                aria-describedby="basic-addon1">
+                            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                El precio es Obligatoria
+                            </div>
+                        </div>
+
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="observaciones">
+                    <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+                    <td (click)="selectedInput='observaciones'+i" mat-cell *matCellDef="let element;let i=index">
+                        <div [hidden]="selectedInput=='observaciones'+i"> {{element.descripcion}}</div>
+
+                        <div [hidden]="selectedInput!='observaciones'+i" class="input-group has-validation">
+                            <input [(ngModel)]="element.descripcion" type="text" class="form-control "
+                                (blur)="selectedInput='';element.editada=true"
+                                [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
+                                aria-describedby="basic-addon1">
+                            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                El observaciones es Obligatoria
+                            </div>
+                        </div>
+
+                    </td>
+                </ng-container>
+
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="opciones">
+                    <th mat-header-cell *matHeaderCellDef> Opciones </th>
+                    <td mat-cell *matCellDef="let element;let i=index">
+                        <button (click)="eliminar(element)" type="button" class="btn btn-danger  mr-2">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <br>
+            <mat-paginator #paginator class="demo-paginator" [pageSize]="5" [pageSizeOptions]="[5,10]"
+                aria-label="Select page">
+            </mat-paginator>
+
+        </div>
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->

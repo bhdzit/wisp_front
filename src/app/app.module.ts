@@ -18,6 +18,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { MapViewComponent } from './shared-componentes/map-view.component';
 import { SectorComponent } from './componentes/sector/sector.component';
 import { DeactivateGuard } from './deactivate-guard';
+import { PaquetesComponent } from './componentes/paquetes/paquetes.component';
+import {MatPaginatorModule} from '@angular/material/paginator'
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { DeactivateGuard } from './deactivate-guard';
     TorreComponent,
     TorreInfoComponent,
     MapViewComponent,
-    SectorComponent
+    SectorComponent,
+    PaquetesComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,8 @@ import { DeactivateGuard } from './deactivate-guard';
     MatTableModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    MatPaginatorModule
   ],
   providers: [AllHttpInterceptor,DeactivateGuard, {
     provide: MatDialogRef,
