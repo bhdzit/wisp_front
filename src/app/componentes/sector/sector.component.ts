@@ -1,17 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SectorsService } from 'src/app/services/sectores.services';
 import { TorresService } from 'src/app/services/torres.services';
 import Swal from 'sweetalert2';
 import { TorreVO } from '../torre/torre.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface SectorVO {
   id?: number;
   name?: string;
   torre?: number | null;
   tipoAntena?: boolean | null;
-  nueva: boolean;
-  editada: boolean;
+  nueva?: boolean;
+  editada?: boolean;
   eliminada?: boolean;
 }
 
@@ -23,17 +25,20 @@ export interface SectorVO {
 })
 export class SectorComponent implements OnInit {
   listaDeCambios: Observable<any>[] = [];
-  dataSource: SectorVO[] = [];
+  dataSource: MatTableDataSource<SectorVO> = new MatTableDataSource();
   submitErrorMsg: any = {};
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'opciones'];
   selectedInput: string = "";
   listaDeTorres: TorreVO[] = [];
-  filasEliminadas: SectorVO[] = []
+  filasEliminadas: SectorVO[] = [];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
 
   constructor(private _sectorsService: SectorsService, private _torresService: TorresService) { }
   ngOnInit(): void {
     this._sectorsService.getSectors().subscribe(then => {
-      this.dataSource = then;
+      this.dataSource.data = then;
+      this.dataSource.paginator = this.paginator;
     });
     this.findTorres();
   }
@@ -64,10 +69,10 @@ export class SectorComponent implements OnInit {
   }
 
   agregarSector() {
-    this.dataSource = [...this.dataSource, { tipoAntena: null, nueva: true, editada: false }];
+    this.dataSource.data = [...this.dataSource.data, { tipoAntena: null, nueva: true, editada: false }];
   }
   saveClick() {
-    this.dataSource.map(item => {
+    this.dataSource.data.map(item => {
       if (item.editada && !item.nueva) {
         console.log(item, "editada");
         this.listaDeCambios.push(this._sectorsService.updateSector(item));
@@ -111,7 +116,7 @@ export class SectorComponent implements OnInit {
 
   eliminar(element: SectorVO) {
     this.filasEliminadas.push({ ...element });
-    this.dataSource = this.dataSource.filter(item => element != item);
+    this.dataSource.data = this.dataSource.data.filter(item => element != item);
 
   }
 
