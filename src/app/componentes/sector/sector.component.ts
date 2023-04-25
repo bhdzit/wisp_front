@@ -32,6 +32,7 @@ export class SectorComponent implements OnInit {
   listaDeTorres: TorreVO[] = [];
   filasEliminadas: SectorVO[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  filtradoTxt:string="";
 
 
   constructor(private _sectorsService: SectorsService, private _torresService: TorresService) { }
@@ -118,6 +119,11 @@ export class SectorComponent implements OnInit {
     this.filasEliminadas.push({ ...element });
     this.dataSource.data = this.dataSource.data.filter(item => element != item);
 
+  }
+
+  
+  filtrado(e: KeyboardEvent) {
+    this.dataSource.filter = ((e.target as HTMLInputElement).value);
   }
 
 
