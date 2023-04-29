@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TorresService } from 'src/app/services/torres.services';
 import { MatDialog } from '@angular/material/dialog';
 import { TorreInfoComponent } from './torre-info/torre-info.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface TorreVO {
   id?: number;
@@ -21,21 +23,20 @@ export interface TorreVO {
 
 export class TorreComponent implements OnInit {
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'opciones'];
+  dataSource: MatTableDataSource<TorreVO> = new MatTableDataSource([{}]);
+
   constructor(private _torresService: TorresService, public _dialog: MatDialog) { }
 
   ngOnInit(): void {
     this._torresService.getTorres().subscribe(then => {
-      this.dataSource = then;
-
+      this.dataSource.data = then;
+      this.dataSource.paginator = this.paginator;
     });
 
   }
-
-
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'opciones'];
-  dataSource: TorreVO[] = [];
-
-
   agregarTorre() {
     const dialogRef = this._dialog.open(TorreInfoComponent, {
       width: '50vw', enterAnimationDuration: "1000ms"
@@ -43,7 +44,13 @@ export class TorreComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined && "data" in result) {
-        this.dataSource = result.data;
+        this.dataSource.data = result.data;
+
+        setTimeout(() => {
+          this.dataSource.paginator?.lastPage();
+        }, 1000);
+
+
       }
     });
   }
@@ -56,7 +63,7 @@ export class TorreComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined && "data" in result) {
-        this.dataSource = result.data;
+        this.dataSource.data = result.data;
       }
     });
   }
@@ -64,7 +71,7 @@ export class TorreComponent implements OnInit {
   eliminarTorre(torre: TorreVO) {
     this._torresService.destroyTorres(torre).subscribe(
       then => {
-        this.dataSource = then;
+        this.dataSource.data = then;
       }
     );
   }
