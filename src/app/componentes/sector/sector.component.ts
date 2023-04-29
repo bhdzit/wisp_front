@@ -71,6 +71,10 @@ export class SectorComponent implements OnInit {
 
   agregarSector() {
     this.dataSource.data = [...this.dataSource.data, { tipoAntena: null, nueva: true, editada: false }];
+    setTimeout(() => {
+      this.dataSource.paginator?.lastPage();
+
+    }, 500); 
   }
   saveClick() {
     this.dataSource.data.map(item => {
