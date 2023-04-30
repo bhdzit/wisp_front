@@ -76,11 +76,9 @@ export class SectorComponent implements OnInit {
 
 
       setTimeout(() => {
-        console.log(input);
         input.focus();
       }, 200)
       this.selectedInput = input.id;
-      console.log(this.selectedInput);
     }
   }
 
