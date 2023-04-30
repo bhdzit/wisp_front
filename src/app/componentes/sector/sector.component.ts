@@ -32,7 +32,7 @@ export class SectorComponent implements OnInit {
   listaDeTorres: TorreVO[] = [];
   filasEliminadas: SectorVO[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  filtradoTxt:string="";
+  filtradoTxt: string = "";
 
 
   constructor(private _sectorsService: SectorsService, private _torresService: TorresService) { }
@@ -42,6 +42,46 @@ export class SectorComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
     });
     this.findTorres();
+  }
+
+  setFocus(e: any) {
+    let filaSeleccionada = (e.target as HTMLElement);
+    if (filaSeleccionada.tagName == "DIV") {
+      setTimeout(() => {
+        let input = filaSeleccionada.parentElement?.children[1].children[0] as HTMLInputElement;
+        input.focus();
+        input.select();
+      }, 200);
+    }
+
+    if (filaSeleccionada.tagName == "TD") {
+      setTimeout(() => {
+        let input = filaSeleccionada.children[1].children[0] as HTMLInputElement;
+        input.focus();
+        input.select();
+      }, 200)
+    }
+  }
+
+  cambioDeInput(e: Event, columna?: number) {
+    this.selectedInput="";
+    if (columna != null) {
+      let filaSeleccionada = (e.target as HTMLElement);
+      let input!: HTMLInputElement;
+
+      if (filaSeleccionada.tagName == "INPUT")
+        input = filaSeleccionada.parentElement?.parentElement?.parentElement?.children[columna].children[1] as HTMLInputElement;
+      if (filaSeleccionada.tagName == "SELECT")
+        input = filaSeleccionada.parentElement?.parentElement?.children[columna].children[1] as HTMLInputElement;
+
+
+      setTimeout(() => {
+        console.log(input);
+        input.focus();
+      }, 200)
+      this.selectedInput = input.id;
+      console.log(this.selectedInput);
+    }
   }
 
   async canDeactivate() {
@@ -74,7 +114,7 @@ export class SectorComponent implements OnInit {
     setTimeout(() => {
       this.dataSource.paginator?.lastPage();
 
-    }, 500); 
+    }, 500);
   }
   saveClick() {
     this.dataSource.data.map(item => {
@@ -125,7 +165,7 @@ export class SectorComponent implements OnInit {
 
   }
 
-  
+
   filtrado(e: KeyboardEvent) {
     this.dataSource.filter = ((e.target as HTMLInputElement).value);
   }
