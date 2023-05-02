@@ -6,8 +6,8 @@ import { PaquetesService } from 'src/app/services/paquetes.service';
 import Swal from 'sweetalert2';
 
 export interface PaqueteVO {
-  nueva: boolean;
-  editada: boolean;
+  nueva?: boolean;
+  editada?: boolean;
 }
 
 
@@ -133,6 +133,25 @@ export class PaquetesComponent {
   eliminar(element: PaqueteVO) {
     this.filasEliminadas.push({ ...element });
     this.dataSource.data = this.dataSource.data.filter(item => element != item);
+  }
+
+  setFocus(e: any) {
+    let filaSeleccionada = (e.target as HTMLElement);
+    if (filaSeleccionada.tagName == "DIV") {
+      setTimeout(() => {
+        let input = filaSeleccionada.parentElement?.children[1].children[0] as HTMLInputElement;
+        input.focus();
+        input.select();
+      }, 200);
+    }
+
+    if (filaSeleccionada.tagName == "TD") {
+      setTimeout(() => {
+        let input = filaSeleccionada.children[1].children[0] as HTMLInputElement;
+        input.focus();
+        input.select();
+      }, 200)
+    }
   }
 
 

@@ -69,7 +69,7 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                    <td (click)="selectedInput='nombre'+i" mat-cell *matCellDef="let element;let i=index">
+                    <td (click)="setFocus($event);selectedInput='nombre'+i" mat-cell *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='nombre'+i"> {{element.name}}</div>
 
                         <div [hidden]="selectedInput!='nombre'+i" class="input-group has-validation">
@@ -88,7 +88,7 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="tx">
                     <th mat-header-cell *matHeaderCellDef> TX </th>
-                    <td (click)="selectedInput='tx'+i" mat-cell *matCellDef="let element;let i=index">
+                    <td (click)="setFocus($event);selectedInput='tx'+i" mat-cell *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='tx'+i"> {{element.tx}}</div>
 
                         <div [hidden]="selectedInput!='tx'+i" class="input-group has-validation">
@@ -107,7 +107,7 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="rx">
                     <th mat-header-cell *matHeaderCellDef> RX </th>
-                    <td (click)="selectedInput='rx'+i" mat-cell *matCellDef="let element;let i=index">
+                    <td (click)="setFocus($event);selectedInput='rx'+i" mat-cell *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='rx'+i"> {{element.rx}}</div>
 
                         <div [hidden]="selectedInput!='rx'+i" class="input-group has-validation">
@@ -126,7 +126,7 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="precio">
                     <th mat-header-cell *matHeaderCellDef> Precio </th>
-                    <td (click)="selectedInput='precio'+i" mat-cell *matCellDef="let element;let i=index">
+                    <td (click)="setFocus($event);selectedInput='precio'+i" mat-cell *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='precio'+i"> {{element.precio}}</div>
 
                         <div [hidden]="selectedInput!='precio'+i" class="input-group has-validation">
@@ -145,7 +145,7 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="observaciones">
                     <th mat-header-cell *matHeaderCellDef> Descripcion </th>
-                    <td (click)="selectedInput='observaciones'+i" mat-cell *matCellDef="let element;let i=index">
+                    <td (click)="setFocus($event);selectedInput='observaciones'+i" mat-cell *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='observaciones'+i"> {{element.descripcion}}</div>
 
                         <div [hidden]="selectedInput!='observaciones'+i" class="input-group has-validation">
