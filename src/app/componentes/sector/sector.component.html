@@ -53,19 +53,25 @@
                 <!-- Position Column -->
                 <ng-container matColumnDef="position">
                     <th mat-header-cell *matHeaderCellDef> No. </th>
-                    <td mat-cell *matCellDef="let element;let i=index"> {{i+1}} </td>
+                    <td mat-cell *matCellDef="let element;let i=index"> {{(paginator.pageIndex*paginator.pageSize)+
+                        (i+1)}}</td>
                 </ng-container>
+
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> SSID </th>
-                    <td  (click)="setFocus($event);selectedInput='ssid'+i" mat-cell *matCellDef="let element;let i=index">
-                        <div [hidden]="selectedInput=='ssid'+i"> {{element.name}}</div>
+                    <td (click)="setFocus($event);selectedInput='ssid'+i" mat-cell
+                        *matCellDef="let element;let i=index;">
+                        <div [hidden]="selectedInput=='ssid'+i"> {{element.name}} </div>
 
-                        <div [hidden]="selectedInput!='ssid'+i" class="input-group has-validation">
-                            <input [id]="'ssid'+i" (focusout)="cambioDeInput($event,2)" [(ngModel)]="element.name" type="text" class="form-control "
+                        <div [hidden]="selectedInput!='ssid'+i&&!(element.errorMsg?.name?.length>0)"
+                            (keypress)="eliminarMsj(element,'name')" class="input-group has-validation">
+                            <input [id]="'ssid'+((paginator.pageIndex*paginator.pageSize)+i)"
+                                [attr.next-tab-input]="'tipoAntena'+((paginator.pageIndex*paginator.pageSize)+i)"
+                                [(ngModel)]="element.name" type="text" class="form-control "
                                 (blur)="selectedInput='';element.editada=true"
-                                [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
+                                [ngClass]="{'is-invalid':element?.errorMsg?.name}" placeholder="" aria-label=""
                                 aria-describedby="basic-addon1">
                             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                                 El SSID es Obligatoria
@@ -79,29 +85,43 @@
                 <ng-container matColumnDef="weight">
                     <th mat-header-cell *matHeaderCellDef> Tipo de Antena </th>
                     <td (click)="selectedInput='tipoAntena'+i" mat-cell *matCellDef="let element;let i=index">
-                        <div [hidden]="selectedInput=='tipoAntena'+i">
+                        <div [hidden]="selectedInput=='tipoAntena'+i||(element.errorMsg?.tipoAntena?.length>0)">
                             {{element.tipoAntena==true?'Sectorial':element.tipoAntena==false?'Omnidireccional':'--Seleccione'}}
                         </div>
-                        <select [id]="'tipoAntena'+i" (focusout)="cambioDeInput($event,3)" [id]="'tipoAntena'+i" [hidden]="selectedInput!='tipoAntena'+i" [(ngModel)]="element.tipoAntena"
-                            class="form-control" aria-label="Default select example">
+                        <select [id]="'tipoAntena'+((paginator.pageIndex*paginator.pageSize)+i)"
+                            [attr.next-tab-input]="'torre'+((paginator.pageIndex*paginator.pageSize)+i)"
+                            [hidden]="selectedInput!='tipoAntena'+i&&!(element.errorMsg?.tipoAntena?.length>0)"
+                            [(ngModel)]="element.tipoAntena" class="form-control"
+                            [ngClass]="{'is-invalid':element?.errorMsg?.tipoAntena}"
+                            aria-label="Default select example">
                             <option disabled [value]="null">--Seleccione</option>
                             <option [value]="false">Omnidireccional</option>
                             <option [value]="true">Sectorial</option>
                         </select>
+                        <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                            El tipo de antena es obligatorio
+                        </div>
                     </td>
                 </ng-container>
 
                 <!-- Symbol Column -->
                 <ng-container matColumnDef="symbol">
-                    <th mat-header-cell *matHeaderCellDef> Ubicacion </th>
-                    <td (click)="selectedInput='torre'+i" (focusout)="cambioDeInput($event)" mat-cell *matCellDef="let element;let i=index">
-                        <div [hidden]="selectedInput=='torre'+i">{{element?.Torre?.nombre}}</div>
-                        <select [id]="'torre'+i"  [hidden]="selectedInput!='torre'+i" [(ngModel)]="element.torre" class="form-control"
-                            aria-label="Default select example">
+                    <th mat-header-cell *matHeaderCellDef> Torre </th>
+                    <td (click)="selectedInput='torre'+i"  mat-cell
+                        *matCellDef="let element;let i=index">
+                        <div [hidden]="selectedInput=='torre'+i||(element.errorMsg?.torre?.length>0)"
+                            *ngIf="getTorreSelecionada(element)">
+                            {{element?.torre==null?"--Seleccione":element?.torreStr}}</div>
+                        <select [id]="'torre'+((paginator.pageIndex*paginator.pageSize)+i)"
+                            [hidden]="selectedInput!='torre'+i&&!(element.errorMsg?.torre?.length>0)"
+                            [(ngModel)]="element.torre" class="form-control" aria-label="Default select example"
+                            [ngClass]="{'is-invalid':element?.errorMsg?.tipoAntena}">
                             <option disabled [value]="null">--Seleccione</option>
                             <option *ngFor="let torre of listaDeTorres" [value]="torre.id">{{torre.nombre}}</option>
-
                         </select>
+                        <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                            La Torre es Obligatoria
+                        </div>
                     </td>
 
                 </ng-container>

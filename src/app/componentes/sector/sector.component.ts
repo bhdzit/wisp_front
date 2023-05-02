@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Observable, concat, retry } from 'rxjs';
 import { SectorsService } from 'src/app/services/sectores.services';
 import { TorresService } from 'src/app/services/torres.services';
 import Swal from 'sweetalert2';
@@ -11,10 +11,12 @@ export interface SectorVO {
   id?: number;
   name?: string;
   torre?: number | null;
+  torreStr?: string | null;
   tipoAntena?: boolean | null;
   nueva?: boolean;
   editada?: boolean;
   eliminada?: boolean;
+  errorMsg?: any
 }
 
 
@@ -36,6 +38,32 @@ export class SectorComponent implements OnInit {
 
 
   constructor(private _sectorsService: SectorsService, private _torresService: TorresService) { }
+
+  @HostListener('document:keydown.tab', ['$event'])
+  onKeydownHandler(event: KeyboardEvent) {
+    if (this.selectedInput != '') {
+      event.preventDefault();
+      
+      let target = document.getElementById(this.selectedInput) as HTMLElement;
+      let nextTargetID: string | null = target.getAttribute("next-tab-input");
+      this.selectedInput="";
+      if (nextTargetID != null) {
+        let nextTarget = document.getElementById(nextTargetID) as HTMLSelectElement;
+
+        setTimeout(() => {
+          if (nextTargetID != null) {
+            this.selectedInput = nextTargetID;
+            setTimeout(() => {
+              nextTarget.focus();
+            }, 200);
+            console.log(this.selectedInput);
+          }
+        }, 200);
+      }
+    }
+
+  }
+
   ngOnInit(): void {
     this._sectorsService.getSectors().subscribe(then => {
       this.dataSource.data = then;
@@ -63,24 +91,6 @@ export class SectorComponent implements OnInit {
     }
   }
 
-  cambioDeInput(e: Event, columna?: number) {
-    this.selectedInput="";
-    if (columna != null) {
-      let filaSeleccionada = (e.target as HTMLElement);
-      let input!: HTMLInputElement;
-
-      if (filaSeleccionada.tagName == "INPUT")
-        input = filaSeleccionada.parentElement?.parentElement?.parentElement?.children[columna].children[1] as HTMLInputElement;
-      if (filaSeleccionada.tagName == "SELECT")
-        input = filaSeleccionada.parentElement?.parentElement?.children[columna].children[1] as HTMLInputElement;
-
-
-      setTimeout(() => {
-        input.focus();
-      }, 200)
-      this.selectedInput = input.id;
-    }
-  }
 
   async canDeactivate() {
 
@@ -96,9 +106,6 @@ export class SectorComponent implements OnInit {
         confirmButtonText: 'Si, Salir sin Guardar!'
       });
 
-      console.log(res);
-
-
       // you logic goes here, whatever that may be 
       // and it must return either True or False
 
@@ -108,47 +115,73 @@ export class SectorComponent implements OnInit {
   }
 
   agregarSector() {
-    this.dataSource.data = [...this.dataSource.data, { tipoAntena: null, nueva: true, editada: false }];
+    this.dataSource.data = [...this.dataSource.data, { tipoAntena: null, nueva: true, editada: false, torre: null }];
     setTimeout(() => {
       this.dataSource.paginator?.lastPage();
 
     }, 500);
   }
+
+  validarInputs(): boolean {
+    let hayErrores: boolean = false;
+    this.dataSource.data.map((item, index) => {
+      item.errorMsg = {};
+      if (!item.name) {
+        hayErrores = true;
+        item.errorMsg["name"] = "no hay datos";
+        this.selectedInput = ("ssid" + (index + 1));
+      }
+      if (item.tipoAntena == null) {
+        hayErrores = true;
+        item.errorMsg["tipoAntena"] = "no hay datos";
+        this.selectedInput = ("tipoAntena" + (index + 1));
+      }
+
+      if (item.torre == null) {
+        hayErrores = true;
+        item.errorMsg["torre"] = "no hay datos";
+        this.selectedInput = ("torre" + (index + 1));
+
+      }
+    });
+    console.log("validando")
+    return !hayErrores;
+  }
+
   saveClick() {
-    this.dataSource.data.map(item => {
-      if (item.editada && !item.nueva) {
-        console.log(item, "editada");
-        this.listaDeCambios.push(this._sectorsService.updateSector(item));
-      };
-      if (item.nueva) {
-        console.log(item, "nueva")
-        this.listaDeCambios.push(this._sectorsService.saveSector(item));
-      };
+    if (this.validarInputs()) {
+      this.dataSource.data.map(item => {
+        if (item.editada && !item.nueva) {
+          //console.log(item, "editada");
+          this.listaDeCambios.push(this._sectorsService.updateSector(item));
+        };
+        if (item.nueva) {
+          // console.log(item, "nueva")
+          this.listaDeCambios.push(this._sectorsService.saveSector(item));
+        };
 
 
-    });
+      });
 
-    this.filasEliminadas.map(item => {
-      if (!item.nueva) console.log(item, "eliminada");
-      this.listaDeCambios.push(this._sectorsService.destroySector(item));
-    });
+      this.filasEliminadas.map(item => {
+        if (!item.nueva) console.log(item, "eliminada");
+        this.listaDeCambios.push(this._sectorsService.destroySector(item));
+      });
 
-    this.saveSectores(0);
-
+      this.saveSectores(0);
+    }
   }
 
   saveSectores(index: number) {
-    if (this.listaDeCambios.length > 0 && this.listaDeCambios.length > index) {
-      this.listaDeCambios[index].subscribe(then => {
-        index++;
-        console.log(index);
-        this.saveSectores(index);
-        if (index == this.listaDeCambios.length) {
-          this.dataSource = then;
-          this.listaDeCambios = [];
-        }
-      });
-    }
+    concat(...this.listaDeCambios).subscribe(
+      res => console.log("next", res),
+      err => console.log("error", err),
+      () => {
+        this.listaDeCambios = [];
+        this.filasEliminadas = [];
+        console.log("complete")
+      }
+    );
   }
 
   findTorres() {
@@ -163,10 +196,21 @@ export class SectorComponent implements OnInit {
 
   }
 
+  eliminarMsj(item: SectorVO, atributo: string) {
+    if (item.errorMsg != null)
+      item.errorMsg[atributo] = '';
+    return true;
+  }
+
 
   filtrado(e: KeyboardEvent) {
     this.dataSource.filter = ((e.target as HTMLInputElement).value);
   }
 
+  getTorreSelecionada(item: SectorVO) {
+
+    item.torreStr = this.listaDeTorres.filter(torre => torre.id == item.torre)[0]?.nombre;
+    return true;
+  }
 
 }
