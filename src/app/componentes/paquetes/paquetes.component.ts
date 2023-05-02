@@ -102,6 +102,10 @@ export class PaquetesComponent {
 
   agregarSector() {
     this.dataSource.data = [...this.dataSource.data, { nueva: true, editada: false }];
+    setTimeout(() => {
+      this.dataSource.paginator?.lastPage();
+
+    }, 500);
 
   }
   saveClick() {
