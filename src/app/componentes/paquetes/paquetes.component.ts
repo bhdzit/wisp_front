@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild,HostListener } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, concat } from 'rxjs';
@@ -35,6 +35,31 @@ export class PaquetesComponent {
       this.dataSourceBkp = [...JSON.parse(JSON.stringify(then))];
       this.dataSource.paginator = this.paginator;
     });
+
+  }
+
+  @HostListener('document:keydown.tab', ['$event'])
+  onKeydownHandler(event: KeyboardEvent) {
+    if (this.selectedInput != '') {
+      event.preventDefault();
+      
+      let target = document.getElementById(this.selectedInput) as HTMLElement;
+      let nextTargetID: string | null = target.getAttribute("next-tab-input");
+      this.selectedInput="";
+      if (nextTargetID != null) {
+        let nextTarget = document.getElementById(nextTargetID) as HTMLInputElement;
+
+        setTimeout(() => {
+          if (nextTargetID != null) {
+            this.selectedInput = nextTargetID;
+            setTimeout(() => {
+              nextTarget.focus();
+              nextTarget.select();
+            }, 200);
+          }
+        }, 200);
+      }
+    }
 
   }
 

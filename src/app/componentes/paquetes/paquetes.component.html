@@ -23,23 +23,23 @@
     <div class="card ml-3 mr-3">
         <div class="card-header">
             <h3 class="card-title">Lista de Paquetes</h3>
-            
-            <div class="card-tools">
-             
-            </div>
-            
 
             <div class="card-tools">
-               <div class="search-input mr-3">
-                <div class="input-group ">
-                    <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
-                      aria-describedby="basic-addon2" (keyup)="filtrado($event)" [(ngModel)]="filtradoTxt">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+
+            </div>
+
+
+            <div class="card-tools">
+                <div class="search-input mr-3">
+                    <div class="input-group ">
+                        <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                            aria-describedby="basic-addon2" (keyup)="filtrado($event)" [(ngModel)]="filtradoTxt">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
                     </div>
-                  </div>
-                </div>  
-              
+                </div>
+
 
                 <button (click)="descartarClick()" type="button" class="btn btn-info mr-2">
                     <i class="fas fa-undo-alt"></i>
@@ -69,11 +69,14 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                    <td (click)="setFocus($event);selectedInput='nombre'+i" mat-cell *matCellDef="let element;let i=index">
+                    <td (click)="setFocus($event);selectedInput='nombre'+i" mat-cell
+                        *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='nombre'+i"> {{element.name}}</div>
 
                         <div [hidden]="selectedInput!='nombre'+i" class="input-group has-validation">
                             <input [(ngModel)]="element.name" type="text" class="form-control "
+                                [id]="'nombre'+((paginator.pageIndex*paginator.pageSize)+i)"
+                                [attr.next-tab-input]="'tx'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 (blur)="selectedInput='';element.editada=true"
                                 [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
                                 aria-describedby="basic-addon1">
@@ -93,6 +96,8 @@
 
                         <div [hidden]="selectedInput!='tx'+i" class="input-group has-validation">
                             <input [(ngModel)]="element.tx" type="text" class="form-control "
+                                [id]="'tx'+((paginator.pageIndex*paginator.pageSize)+i)"
+                                [attr.next-tab-input]="'rx'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 (blur)="selectedInput='';element.editada=true"
                                 [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
                                 aria-describedby="basic-addon1">
@@ -112,6 +117,8 @@
 
                         <div [hidden]="selectedInput!='rx'+i" class="input-group has-validation">
                             <input [(ngModel)]="element.rx" type="text" class="form-control "
+                                [id]="'rx'+((paginator.pageIndex*paginator.pageSize)+i)"
+                                [attr.next-tab-input]="'precio'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 (blur)="selectedInput='';element.editada=true"
                                 [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
                                 aria-describedby="basic-addon1">
@@ -126,11 +133,14 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="precio">
                     <th mat-header-cell *matHeaderCellDef> Precio </th>
-                    <td (click)="setFocus($event);selectedInput='precio'+i" mat-cell *matCellDef="let element;let i=index">
+                    <td (click)="setFocus($event);selectedInput='precio'+i" mat-cell
+                        *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='precio'+i"> {{element.precio}}</div>
 
                         <div [hidden]="selectedInput!='precio'+i" class="input-group has-validation">
                             <input [(ngModel)]="element.precio" type="text" class="form-control "
+                                [id]="'precio'+((paginator.pageIndex*paginator.pageSize)+i)"
+                                [attr.next-tab-input]="'observaciones'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 (blur)="selectedInput='';element.editada=true"
                                 [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
                                 aria-describedby="basic-addon1">
@@ -145,11 +155,13 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="observaciones">
                     <th mat-header-cell *matHeaderCellDef> Descripcion </th>
-                    <td (click)="setFocus($event);selectedInput='observaciones'+i" mat-cell *matCellDef="let element;let i=index">
+                    <td (click)="setFocus($event);selectedInput='observaciones'+i" mat-cell
+                        *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='observaciones'+i"> {{element.descripcion}}</div>
 
                         <div [hidden]="selectedInput!='observaciones'+i" class="input-group has-validation">
                             <input [(ngModel)]="element.descripcion" type="text" class="form-control "
+                                [id]="'observaciones'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 (blur)="selectedInput='';element.editada=true"
                                 [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
                                 aria-describedby="basic-addon1">
