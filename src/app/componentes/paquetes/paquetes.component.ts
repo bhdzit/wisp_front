@@ -1,4 +1,4 @@
-import { Component, ViewChild,HostListener } from '@angular/core';
+import { Component, ViewChild, HostListener } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, concat } from 'rxjs';
@@ -6,8 +6,14 @@ import { PaquetesService } from 'src/app/services/paquetes.service';
 import Swal from 'sweetalert2';
 
 export interface PaqueteVO {
+  name?: string
+  tx?:string
+  rx?:string
+  precio?:string
+  descripcion?:string
   nueva?: boolean;
   editada?: boolean;
+  errorMsg?: any
 }
 
 
@@ -42,10 +48,10 @@ export class PaquetesComponent {
   onKeydownHandler(event: KeyboardEvent) {
     if (this.selectedInput != '') {
       event.preventDefault();
-      
+
       let target = document.getElementById(this.selectedInput) as HTMLElement;
       let nextTargetID: string | null = target.getAttribute("next-tab-input");
-      this.selectedInput="";
+      this.selectedInput = "";
       if (nextTargetID != null) {
         let nextTarget = document.getElementById(nextTargetID) as HTMLInputElement;
 
@@ -92,7 +98,7 @@ export class PaquetesComponent {
 
   descartarClick() {
     this.filtradoTxt = "";
-    this.dataSource = new MatTableDataSource(this.dataSourceBkp);
+    this.dataSource = new MatTableDataSource([...JSON.parse(JSON.stringify(this.dataSourceBkp))]);
     this.dataSource.paginator = this.paginator;
   }
 
@@ -109,30 +115,35 @@ export class PaquetesComponent {
 
   }
   saveClick() {
-    this.dataSource.data.map(item => {
-      if (item.editada && !item.nueva) {
-        console.log(item, "editada");
-        this.listaDeCambios.push(this._paquetesService.updatePaquete(item));
-      };
-      if (item.nueva) {
-        console.log(item, "nueva")
-        this.listaDeCambios.push(this._paquetesService.savePaquetes(item));
-      };
+    if (this.validarInputs()) {
+      this.dataSource.data.map(item => {
+        if (item.editada && !item.nueva) {
+          console.log(item, "editada");
+          this.listaDeCambios.push(this._paquetesService.updatePaquete(item));
+        };
+        if (item.nueva) {
+          console.log(item, "nueva")
+          this.listaDeCambios.push(this._paquetesService.savePaquetes(item));
+        };
 
 
-    });
+      });
 
-    this.filasEliminadas.map(item => {
-      if (!item.nueva) console.log(item, "eliminada");
-      this.listaDeCambios.push(this._paquetesService.destroyPaquetes(item));
-    });
+      this.filasEliminadas.map(item => {
+        if (!item.nueva) console.log(item, "eliminada");
+        this.listaDeCambios.push(this._paquetesService.destroyPaquetes(item));
+      });
 
-    this.saveSectores();
+      this.saveSectores();
+    }
   }
-
   saveSectores() {
     concat(...this.listaDeCambios).subscribe(
-      res => console.log("next", res),
+      then => {
+        this.dataSource.data = then;
+        this.dataSource.paginator = this.paginator;
+        this.dataSourceBkp = [...JSON.parse(JSON.stringify(then))];
+      },
       err => console.log("error", err),
       () => {
         this.listaDeCambios = [];
@@ -181,6 +192,45 @@ export class PaquetesComponent {
         input.select();
       }, 200)
     }
+  }
+
+  validarInputs(): boolean {
+    let hayErrores: boolean = false;
+    this.dataSource.data.map((item, index) => {
+      item.errorMsg = {};
+      if (!item.name) {
+        hayErrores = true;
+        item.errorMsg["name"] = "no hay datos";
+        this.selectedInput = ("name" + (index + 1));
+      }
+
+      if (!item.tx) {
+        hayErrores = true;
+        item.errorMsg["tx"] = "no hay datos";
+        this.selectedInput = ("tx" + (index + 1));
+      }
+
+      if (!item.rx) {
+        hayErrores = true;
+        item.errorMsg["rx"] = "no hay datos";
+        this.selectedInput = ("rx" + (index + 1));
+      }
+
+      if (!item.precio) {
+        hayErrores = true;
+        item.errorMsg["precio"] = "no hay datos";
+        this.selectedInput = ("precio" + (index + 1));
+      }
+
+      if (!item.descripcion) {
+        hayErrores = true;
+        item.errorMsg["descripcion"] = "no hay datos";
+        this.selectedInput = ("descripcion" + (index + 1));
+      }
+
+    });
+    console.log("validando")
+    return !hayErrores;
   }
 
 

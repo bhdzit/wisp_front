@@ -73,12 +73,12 @@
                         *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='nombre'+i"> {{element.name}}</div>
 
-                        <div [hidden]="selectedInput!='nombre'+i" class="input-group has-validation">
+                        <div [hidden]="selectedInput!='nombre'+i&&!(element.errorMsg?.name?.length>0)" class="input-group has-validation">
                             <input [(ngModel)]="element.name" type="text" class="form-control "
                                 [id]="'nombre'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 [attr.next-tab-input]="'tx'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 (blur)="selectedInput='';element.editada=true"
-                                [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
+                                [ngClass]="{'is-invalid':element?.errorMsg?.name}" placeholder="" aria-label=""
                                 aria-describedby="basic-addon1">
                             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                                 El nombre es Obligatorio
@@ -94,12 +94,12 @@
                     <td (click)="setFocus($event);selectedInput='tx'+i" mat-cell *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='tx'+i"> {{element.tx}}</div>
 
-                        <div [hidden]="selectedInput!='tx'+i" class="input-group has-validation">
+                        <div [hidden]="selectedInput!='tx'+i&&!(element.errorMsg?.tx?.length>0)" class="input-group has-validation">
                             <input [(ngModel)]="element.tx" type="text" class="form-control "
                                 [id]="'tx'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 [attr.next-tab-input]="'rx'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 (blur)="selectedInput='';element.editada=true"
-                                [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
+                                [ngClass]="{'is-invalid':element?.errorMsg?.tx}" placeholder="" aria-label=""
                                 aria-describedby="basic-addon1">
                             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                                 El tx es Obligatorio
@@ -115,12 +115,12 @@
                     <td (click)="setFocus($event);selectedInput='rx'+i" mat-cell *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='rx'+i"> {{element.rx}}</div>
 
-                        <div [hidden]="selectedInput!='rx'+i" class="input-group has-validation">
+                        <div [hidden]="selectedInput!='rx'+i&&!(element.errorMsg?.rx?.length>0)" class="input-group has-validation">
                             <input [(ngModel)]="element.rx" type="text" class="form-control "
                                 [id]="'rx'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 [attr.next-tab-input]="'precio'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 (blur)="selectedInput='';element.editada=true"
-                                [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
+                                [ngClass]="{'is-invalid':element.errorMsg?.rx}" placeholder="" aria-label=""
                                 aria-describedby="basic-addon1">
                             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                                 El rx es Obligatorio
@@ -137,12 +137,12 @@
                         *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='precio'+i"> {{element.precio}}</div>
 
-                        <div [hidden]="selectedInput!='precio'+i" class="input-group has-validation">
+                        <div [hidden]="selectedInput!='precio'+i&&!(element.errorMsg?.precio?.length>0)" class="input-group has-validation">
                             <input [(ngModel)]="element.precio" type="text" class="form-control "
                                 [id]="'precio'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 [attr.next-tab-input]="'observaciones'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 (blur)="selectedInput='';element.editada=true"
-                                [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
+                                [ngClass]="{'is-invalid':element.errorMsg?.precio}" placeholder="" aria-label=""
                                 aria-describedby="basic-addon1">
                             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                                 El precio es Obligatoria
@@ -159,11 +159,11 @@
                         *matCellDef="let element;let i=index">
                         <div [hidden]="selectedInput=='observaciones'+i"> {{element.descripcion}}</div>
 
-                        <div [hidden]="selectedInput!='observaciones'+i" class="input-group has-validation">
+                        <div [hidden]="selectedInput!='observaciones'+i&&!(element.errorMsg?.descripcion?.length>0)" class="input-group has-validation">
                             <input [(ngModel)]="element.descripcion" type="text" class="form-control "
                                 [id]="'observaciones'+((paginator.pageIndex*paginator.pageSize)+i)"
                                 (blur)="selectedInput='';element.editada=true"
-                                [ngClass]="{'is-invalid':submitErrorMsg['name']}" placeholder="" aria-label=""
+                                [ngClass]="{'is-invalid':element.errorMsg?.descripcion}" placeholder="" aria-label=""
                                 aria-describedby="basic-addon1">
                             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                                 El observaciones es Obligatoria
