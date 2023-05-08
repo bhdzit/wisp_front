@@ -38,6 +38,10 @@
                     </div>
                 </div>
 
+                <button (click)="descartarClick()" type="button" class="btn btn-info mr-2">
+                    <i class="fas fa-undo-alt"></i>
+                </button>
+
                 <button (click)="saveClick()" type="button" class="btn btn-warning mr-2">
                     <i class="fas fa-save"></i>
                 </button>
@@ -141,7 +145,7 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
         </div>
-        <mat-paginator #paginator class="demo-paginator" [pageSize]="5" [pageSizeOptions]="[5,10]"
+        <mat-paginator #paginator class="demo-paginator" [pageSize]="5" [pageSizeOptions]="[5,10]" [showFirstLastButtons]="true"
             aria-label="Select page">
         </mat-paginator>
     </div>

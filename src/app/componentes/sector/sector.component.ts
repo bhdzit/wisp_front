@@ -35,6 +35,7 @@ export class SectorComponent implements OnInit {
   filasEliminadas: SectorVO[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   filtradoTxt: string = "";
+  dataSourceBkp: SectorVO[] = [];
 
 
   constructor(private _sectorsService: SectorsService, private _torresService: TorresService) { }
@@ -43,10 +44,10 @@ export class SectorComponent implements OnInit {
   onKeydownHandler(event: KeyboardEvent) {
     if (this.selectedInput != '') {
       event.preventDefault();
-      
+
       let target = document.getElementById(this.selectedInput) as HTMLElement;
       let nextTargetID: string | null = target.getAttribute("next-tab-input");
-      this.selectedInput="";
+      this.selectedInput = "";
       if (nextTargetID != null) {
         let nextTarget = document.getElementById(nextTargetID) as HTMLSelectElement;
 
@@ -68,6 +69,7 @@ export class SectorComponent implements OnInit {
     this._sectorsService.getSectors().subscribe(then => {
       this.dataSource.data = then;
       this.dataSource.paginator = this.paginator;
+      this.dataSourceBkp = [...JSON.parse(JSON.stringify(then))];
     });
     this.findTorres();
   }
@@ -93,8 +95,10 @@ export class SectorComponent implements OnInit {
 
 
   async canDeactivate() {
-
-    if (this.listaDeCambios.length > 0) {
+    let filasEditadas = this.dataSource.data.filter(item => item.editada && !item.nueva).length;
+    let filasNueva = this.dataSource.data.filter(item => item.nueva).length;
+    let filasEliminadas = this.filasEliminadas.filter(item => !item.nueva).length;
+    if (filasEditadas > 0 || filasNueva > 0 || filasEliminadas > 0) {
       let res = await Swal.fire({
         title: '¿Estas Seguro?',
         text: "Todos los cambios que has hecho no se guardaran!",
@@ -105,6 +109,7 @@ export class SectorComponent implements OnInit {
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Si, Salir sin Guardar!'
       });
+
 
       // you logic goes here, whatever that may be 
       // and it must return either True or False
@@ -174,12 +179,15 @@ export class SectorComponent implements OnInit {
 
   saveSectores(index: number) {
     concat(...this.listaDeCambios).subscribe(
-      res => console.log("next", res),
+      then => {
+        this.dataSource.data = then;
+        this.dataSource.paginator = this.paginator;
+        this.dataSourceBkp = [...JSON.parse(JSON.stringify(then))];
+      },
       err => console.log("error", err),
       () => {
         this.listaDeCambios = [];
         this.filasEliminadas = [];
-        console.log("complete")
       }
     );
   }
@@ -211,6 +219,12 @@ export class SectorComponent implements OnInit {
 
     item.torreStr = this.listaDeTorres.filter(torre => torre.id == item.torre)[0]?.nombre;
     return true;
+  }
+
+  descartarClick() {
+    this.filtradoTxt = "";
+    this.dataSource = new MatTableDataSource([...JSON.parse(JSON.stringify(this.dataSourceBkp))]);
+    this.dataSource.paginator = this.paginator;
   }
 
 }
