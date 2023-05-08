@@ -13,7 +13,11 @@ export class AppComponent {
     private paginator: MatPaginatorIntl
   ) {
     this.paginator.itemsPerPageLabel = "Registros por página";
-    this.paginator.getRangeLabel
+    this.paginator.firstPageLabel = "Primera Pagina";
+    this.paginator.lastPageLabel = "Ultima Pagina";
+    this.paginator.nextPageLabel = "Siguiente Pagina";
+    this.paginator.previousPageLabel = "Pagina Anterior"
+
   }
 
 }
