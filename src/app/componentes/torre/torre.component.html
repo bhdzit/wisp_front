@@ -25,6 +25,17 @@
             <h3 class="card-title">Lista de Torres</h3>
 
             <div class="card-tools">
+
+                <div class="search-input mr-3">
+                    <div class="input-group ">
+                        <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                            aria-describedby="basic-addon2" (keyup)="filtrado($event)" [(ngModel)]="filtradoTxt">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+
                 <button (click)="agregarTorre()" type="button" class="btn btn-success">
                     <i class="fas fa-plus"></i>
                 </button>
@@ -78,8 +89,7 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
         </div>
-        <mat-paginator #paginator class="demo-paginator" [pageSize]="5" [pageSizeOptions]="[5,10]"
-            aria-label="Select page">
+        <mat-paginator #paginator class="demo-paginator" [pageSize]="5" [pageSizeOptions]="[5,10]" [showFirstLastButtons]="true">
         </mat-paginator>
     </div>
     <!-- /.card -->

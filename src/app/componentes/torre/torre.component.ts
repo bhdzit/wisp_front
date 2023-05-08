@@ -28,6 +28,8 @@ export class TorreComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'opciones'];
   dataSource: MatTableDataSource<TorreVO> = new MatTableDataSource([{}]);
 
+  filtradoTxt:string="";
+
   constructor(private _torresService: TorresService, public _dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -74,6 +76,10 @@ export class TorreComponent implements OnInit {
         this.dataSource.data = then;
       }
     );
+  }
+
+  filtrado(e: KeyboardEvent) {
+    this.dataSource.filter = ((e.target as HTMLInputElement).value);
   }
 
 }
