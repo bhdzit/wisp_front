@@ -5,10 +5,10 @@
     <div class="col-sm-7">
         <div class="input-group has-validation">
 
-            <input placeholder="Usuario" type="text" class="form-control" [ngClass]="{'is-invalid':submitErrorMsg['nombre']}" 
-                aria-label="" aria-describedby="basic-addon1">
+            <input placeholder="Usuario" type="text" class="form-control" [(ngModel)]="clienteVO.cliente"
+                [ngClass]="{'is-invalid':submitErrorMsg['cliente']}" aria-label="" aria-describedby="basic-addon1">
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                El nombre es Obligatoria
+                {{submitErrorMsg['cliente']?.["msg"]}}
             </div>
         </div>
     </div>
@@ -16,30 +16,30 @@
     <div class="col-sm-5">
         <div class="input-group has-validation">
 
-            <input placeholder="IP/USU" type="text" class="form-control" [ngClass]="{'is-invalid':submitErrorMsg['nombre']}"
-                aria-label="" aria-describedby="basic-addon1">
+            <input placeholder="IP/USU" type="text" class="form-control" [(ngModel)]="clienteVO.usuario" 
+                [ngClass]="{'is-invalid':submitErrorMsg['usuario']}" aria-label="" aria-describedby="basic-addon1">
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                El nombre es Obligatoria
+                {{submitErrorMsg['usuario']?.["msg"]}}
             </div>
         </div>
     </div>
 
     <div class="col-sm-4 mt-1">
         <div class="input-group has-validation">
-            <input placeholder="Tel 1" type="text" class="form-control" [ngClass]="{'is-invalid':submitErrorMsg['nombre']}"
-                aria-label="" aria-describedby="basic-addon1">
+            <input placeholder="Tel 1" type="text" class="form-control" [(ngModel)]="clienteVO.tel1"
+                [ngClass]="{'is-invalid':submitErrorMsg['tel1']}" aria-label="" aria-describedby="basic-addon1">
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                El nombre es Obligatoria
+                {{submitErrorMsg['tel1']?.["msg"]}}
             </div>
         </div>
     </div>
 
     <div class="col-sm-4 mt-1">
         <div class="input-group has-validation">
-            <input placeholder="Tel 2" type="text" class="form-control" [ngClass]="{'is-invalid':submitErrorMsg['nombre']}"
-                aria-label="" aria-describedby="basic-addon1">
+            <input placeholder="Tel 2" type="tel" class="form-control" [(ngModel)]="clienteVO.tel2" 
+                [ngClass]="{'is-invalid':submitErrorMsg['tel2']}" aria-label="" aria-describedby="basic-addon1">
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                El nombre es Obligatoria
+                {{submitErrorMsg['tel2']?.["msg"]}}
             </div>
         </div>
     </div>
@@ -47,30 +47,41 @@
 
     <div class="col-sm-4 mt-1">
         <div class="input-group has-validation">
-            <select class="form-control">
-                <option>Sector</option>
-                <option>option 2</option>
-                <option>option 3</option>
-                <option>option 4</option>
-                <option>option 5</option>
+            <select class="form-control" [(ngModel)]="clienteVO.sector" [ngClass]="{'is-invalid':submitErrorMsg['sector']}">
+                <option [value]="null" disabled>-- Seleccionar Sector</option>
+                <option *ngFor="let sector of sectoresArr" [value]="sector.id">{{sector.name}}</option>
             </select>
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                La Altura es Obligatoria
+                {{submitErrorMsg['sector']?.["msg"]}}
             </div>
         </div>
     </div>
-   
+
     <div class="col-sm-4 mt-1">
         <div class="input-group has-validation">
-            <select class="form-control">
-                <option>Paquete</option>
-                <option>option 2</option>
-                <option>option 3</option>
-                <option>option 4</option>
-                <option>option 5</option>
+            <select class="form-control" [(ngModel)]="clienteVO.paquete"  [ngClass]="{'is-invalid':submitErrorMsg['paquete']}">
+                <option value="null" disabled>-- Seleccionar paquete</option>
+                <option *ngFor="let paquete of paquetesArr" [value]="paquete.id">{{paquete.name}}</option>
             </select>
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                La Altura es Obligatoria
+                {{submitErrorMsg['paquete']?.["msg"]}}
+            </div>
+        </div>
+    </div>
+    <div class="d-inline mt-3">
+        <label>Primer pago:</label>
+    </div>
+    <div class="col-sm-4 mt-1">
+       
+        <div class="form-group">
+            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                <input [(ngModel)]="clienteVO.primer_pago"  type="date" class="form-control datetimepicker-input"
+                [ngClass]="{'is-invalid':submitErrorMsg['primer_pago']}"
+                data-target="#reservationdate">
+
+                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                    {{submitErrorMsg['primer_pago']?.["msg"]}}
+                </div>
             </div>
         </div>
     </div>
@@ -79,10 +90,10 @@
         <app-map-view (coordsChangeEvent)="coordsChangeEvent($event)"></app-map-view>
         <div id="validationServerUsernameFeedback" class="invalid-feedback "
             [ngClass]="{'d-inline':submitErrorMsg['lat']}">
-            La Altura es Obligatoria
+            {{submitErrorMsg['lat']?.["msg"]}}
         </div>
     </div>
 
 
-    <button type="submit" class="btn btn-primary ml-1">Guardar</button>
+    <button type="submit" class="btn btn-primary ml-1" (click)="guardarCliente()" >Guardar</button>
 </div>
