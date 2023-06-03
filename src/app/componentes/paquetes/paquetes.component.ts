@@ -6,6 +6,7 @@ import { PaquetesService } from 'src/app/services/paquetes.service';
 import Swal from 'sweetalert2';
 
 export interface PaqueteVO {
+  id?:number,
   name?: string
   tx?:string
   rx?:string

@@ -6,3 +6,11 @@
     margin-bottom: 20px;
     box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
+
+td{
+    width: 10vw;
+}
+
+.eliminarPago:hover{
+    cursor: pointer;
+}

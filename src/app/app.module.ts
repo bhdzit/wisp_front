@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './componentes/login/login.component';
 import { HomeComponent } from './componentes/home/home.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AllHttpInterceptor } from './allhttp.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,7 +26,8 @@ import { AgregarPagosComponent } from './componentes/pagos/agregar-pagos/agregar
 import { PagosMesComponent } from './componentes/pagos/pagos-mes/pagos-mes.component';
 import { ReportePagosComponent } from './componentes/pagos/reporte-pagos/reporte-pagos.component';
 import { FiltroComponent } from './shared-componentes/filtro/filtro.component';
-
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,10 @@ import { FiltroComponent } from './shared-componentes/filtro/filtro.component';
     MatDialogModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    MatInputModule
   ],
   providers: [AllHttpInterceptor,DeactivateGuard, {
     provide: MatDialogRef,

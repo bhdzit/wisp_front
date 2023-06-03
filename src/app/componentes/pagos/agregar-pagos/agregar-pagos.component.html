@@ -33,109 +33,67 @@
             <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
                     <div class="col-sm-6">
-                        <input id="clientInput" class="form-control" placeholder="Cliente" list="clientes" value="">
-                        <datalist id="clientes">
-                            <option id="1" value="EDUARDO  AVILES CALVA">
-                            </option>
-                            <option id="3" value="VERENICE  CALVA RODRIGUEZ">
-                            </option>
-                            <option id="4" value="HUITZI LESLI  MARTINEZ VALDEZ">
-                            </option>
-                            <option id="5" value="GILBERTO  PACHECO">
-                            </option>
-                            <option id="6" value="YARET YANIN  CHAVEZ PEREZ">
-                            </option>
-                            <option id="7" value="BENITO  SERRANO JUAREZ">
-                            </option>
-                            <option id="8" value="ESTELA  NIETO CHAVERO">
-                            </option>
-                            <option id="9" value="CLAUDIA  HERNANDEZ">
-                            </option>
-                            <option id="10" value="MIRIAM  MARTINEZ RIVERA">
-                            </option>
-                            <option id="11" value="CESAR  AMADOR">
-                            </option>
-                            <option id="12" value="HECTOR  CHAVEZ">
-                            </option>
-                            <option id="13" value="GABRIELA  CORONA">
-                            </option>
-                            <option id="14" value="AMALIA  TIRADO">
-                            </option>
-                            <option id="18" value="GLORIA  CRUZ TREJO">
-                            </option>
-                        </datalist>
-
+                        <mat-form-field class="example-full-width d-block">
+                            <mat-label>Cliente</mat-label>
+                            <input matInput aria-label="State" [matAutocomplete]="auto" [formControl]="clienteCtrl">
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)='seSelecionoCliente($event)'>
+                                <mat-option [id]="cliente.id+''" *ngFor="let cliente of filteredCliente | async"
+                                    [value]="cliente.cliente">
+                                    <span>{{cliente.cliente}}</span> |
+                                    <small>Sector: {{cliente?.sectorVO?.name}}</small>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
                     </div>
-                    <button style="margin-right: 30px;" href="pagos\agregarpago" class="btn btn-primary pull-right"
-                        onclick="scanQR()">Escaner QR</button>
                 </div>
 
             </div>
             <div class="box ml-3 mr-5"></div>
-            <div class="card-header ">
+            <div [ngClass]="{'d-none':clienteSelecionado==null}" class="card-header ">
                 <div class="d-flex justify-content-between">
-                    <h3 class="col-9 card-title">Realizar Pago</h3>
+                    <h3 class="col-9 card-title">Realizar Pago <span class="text-danger">{{ultimoPagoStr}}</span></h3>
                     <div class="col-3">
-                        <button class="btn btn-success pull-right mr-2" href=""><i class="fas fa-plus"
-                                aria-hidden="true"></i></button>
-                        <button class="btn btn-success pull-right ">Realizar pago</button>
-
+                        <button (click)="agregarPagoNuevo()" class="btn btn-success pull-right mr-2" href=""><i
+                                class="fas fa-plus" aria-hidden="true"></i></button>
+                        <button (click)="realizarPago()" class="btn btn-success pull-right mr-2">Realizar pago</button>
+                        <button  class="btn btn-primary pull-right ">Validar Referencia</button>
                     </div>
                 </div>
             </div>
 
-            <div class="card-body">
+            <div [ngClass]="{'d-none':clienteSelecionado==null}" class="card-body">
                 <table class="table table-bordered table-striped">
-                    <tbody id="creditosTable"></tbody>
-
-
-
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Mes</th>
                             <th>Paquete</th>
-                            <th>METODO de Pago
-                            </th>
+                            <th>METODO de Pago</th>
                             <th style="width: 80px">Costo</th>
                         </tr>
                     </thead>
                     <tbody id="payTable">
-                        <tr id="payOptions">
-                            <td style="width: 30px"> <i id="eliminar" style="color:#F00;margin-top: 10px;"
-                                    class="fas fa-minus-circle" aria-hidden="true"></i><input type="number"
-                                    id="serviceId" name="serviceId" hidden=""></td>
-                            <td class="todo-list ui-sortable"> <select class="form-control" id="payMonth"
-                                    name="payMonth1">
-                                    <option value="1">ENE</option>
-                                    <option value="2">FEB</option>
-                                    <option value="3">MAR</option>
-                                    <option value="4">ABR</option>
-                                    <option value="5">MAY</option>
-                                    <option value="6">JUN</option>
-                                    <option value="7">JUL</option>
-                                    <option value="8">AGO</option>
-                                    <option value="9">SEP</option>
-                                    <option value="10">OCT</option>
-                                    <option value="11">NOV</option>
-                                    <option value="12">DIC</option>
+                        <tr *ngFor="let pago of listaDePagos;let i=index" id="payOptions">
+                            <td style="width: 30px" (click)="eliminarPago(i)" class="eliminarPago">
+                                <i id="eliminar" style="color:#F00;margin-top: 10px;" class="fas fa-minus-circle"
+                                    aria-hidden="true">
+                                </i>
+                            </td>
+                            <td class="todo-list ui-sortable">
+                                <input type="month" class="form-control" [(ngModel)]="pago.mesPagado">
+                            </td>
+                            <td> <select class="form-control pkgClient" id="pkgClient" name="pkgClient1"
+                                    [(ngModel)]="pago.paquete" (change)="cambioDePaquete($event,pago)">
+                                    <option *ngFor="let pkg of listaDePaquetes" [value]="pkg.id">{{pkg.name}}</option>
                                 </select> </td>
-                            <td> <select class="form-control pkgClient" id="pkgClient" name="pkgClient1">
-                                    <option value="1">FAMILIAR</option>
-                                    <option value="2">PLUS</option>
-                                    <option value="3">TORRES</option>
-                                    <option value="4">ESCUELA</option>
-                                    <option value="5">GRATIS</option>
-                                    <option value="6">MMM</option>
-                                    <option value="7">BASICO</option>
-                                </select> </td>
-                            <td><select class="form-control" id="payMethod" onchange="payMethodChange(this)"
+                            <td><select class="form-control" id="payMethod" [(ngModel)]="pago.esReferencia" 
                                     name="payMethod1">
-                                    <option value="1">Efectivo</option>
-                                    <option value="2">Deposito</option>
+                                    <option [value]="false">Efectivo</option>
+                                    <option [value]="true">Deposito</option>
                                 </select></td>
-                            <td><b>$<input name="pay1" style="border: 0;width: 50px;" id="payMoney" type="text"
-                                        readonly=""></b></td>
+                            <td>
+                                <p><b>$ {{pago.costo}}</b></p>
+                            </td>
                         </tr>
                     </tbody>
 
@@ -216,7 +174,7 @@
                     <tfoot>
                         <tr>
                             <td colspan="4"><b>TOTAL : </b></td>
-                            <td><b id="totalPay">$ 323</b></td>
+                            <td><b id="totalPay">$ {{totalEnPagos}}</b></td>
                         </tr>
                     </tfoot>
                 </table>

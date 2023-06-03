@@ -7,9 +7,10 @@ import { PaquetesService } from 'src/app/services/paquetes.service';
 import Swal from 'sweetalert2';
 import { ClientesInfoComponent } from './clientes-info/clientes-info.component';
 import { ClientesService } from 'src/app/services/clientes.service';
+import { SectorVO } from '../sector/sector.component';
 
 export interface ClienteVO {
-  id?: number|null;
+  id?: number | null;
   cliente?: string;
   usuario?: string;
   paquete?: number | null;
@@ -22,6 +23,7 @@ export interface ClienteVO {
   primer_pago?: string | null;
   nueva: boolean;
   editada: boolean;
+  sectorVO?: SectorVO | null;
 }
 
 @Component({
