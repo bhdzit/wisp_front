@@ -19,6 +19,7 @@ export interface PagoVO {
   mesPagado: string;
   estatus?: boolean;
   esReferencia?: boolean;
+  Cliente?: ClienteVO;
 }
 
 
@@ -163,6 +164,50 @@ export class AgregarPagosComponent implements OnInit {
   exitePagoConMetodoReferencia(): boolean {
     let pagosConReferencia = this.listaDePagos.filter(pago => pago.esReferencia && pago.referencia == undefined);
     return pagosConReferencia.length > 0
+  }
+
+  async validarReferencia() {
+    const { value: referencia } = await Swal.fire({
+      title: 'Validar referencia',
+      input: 'text',
+      inputLabel: 'Ingrese referencia',
+      inputPlaceholder: 'Referencia'
+    })
+
+    if (referencia) {
+      this._pagosService.validarReferencia(referencia).subscribe(async (then) => {
+        console.log(then);
+        let titulo = "Se contraron coincidencias en la referencia: `" + referencia + "`";
+        let html = "";
+        if (then.esRefereciaValida) {
+          titulo = "La Referencia " + referencia + " es Valida"
+          //return res.isConfirmed
+        }
+        else {
+          then.coincidencia.map((item: PagoVO) => {
+            html += "Referencia:" + item.referencia + ", Cliente:" + item.Cliente?.cliente + ", Mes:" + item.mesPagado + "<br>";
+          });
+        }
+        let res = await Swal.fire({
+          title: titulo,
+          text: "¿Deseas asignar la referencia al pago ",
+          html: html,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Cerrar',
+          confirmButtonText: 'Si, agregar!'
+        });
+        if (res.isConfirmed) {
+          this.listaDePagos.map(pago => {
+            pago.referencia = referencia;
+          });
+        }
+
+      });
+    }
+
   }
 
 
