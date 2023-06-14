@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input } from '@angular/core';
 import H from '@here/maps-api-for-javascript';
 import { TorreVO } from '../componentes/torre/torre.component';
+import { ClienteVO } from '../componentes/clientes/clientes.component';
 
 @Component({
     selector: 'app-map-view',
@@ -13,11 +14,11 @@ export class MapViewComponent implements OnInit {
     private map?: H.Map;
     private marker: any;
     @Output() coordsChangeEvent: EventEmitter<any> = new EventEmitter();
-    @Input() torre!:TorreVO;
+    @Input() punto!:TorreVO|ClienteVO;
 
 
     ngOnInit(): void {
-        console.log(this.torre);
+        console.log(this.punto);
     }
 
 
@@ -53,8 +54,8 @@ export class MapViewComponent implements OnInit {
             // Create the default UI components
             var ui = H.ui.UI.createDefault(map, layers);
             this.map = map;
-            if("lat" in this.torre)
-            this.addOnTapMarck({ lat: this.torre.lat, lng: this.torre.lng });
+            if("lat" in this.punto)
+            this.addOnTapMarck({ lat: this.punto.lat, lng: this.punto.lng });
             this.addClickEvent();
         }
     }

@@ -86,8 +86,8 @@
         </div>
     </div>
 
-    <div class="col-sm-12">
-        <app-map-view (coordsChangeEvent)="coordsChangeEvent($event)"></app-map-view>
+    <div class="col-sm-12"> 
+        <app-map-view (coordsChangeEvent)="coordsChangeEvent($event)" [punto]="clienteVO"></app-map-view>
         <div id="validationServerUsernameFeedback" class="invalid-feedback "
             [ngClass]="{'d-inline':submitErrorMsg['lat']}">
             {{submitErrorMsg['lat']?.["msg"]}}

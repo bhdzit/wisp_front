@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="col-sm-12">
-        <app-map-view (coordsChangeEvent)="coordsChangeEvent($event)" [torre]="torre"></app-map-view>
+        <app-map-view (coordsChangeEvent)="coordsChangeEvent($event)" [punto]="torre"></app-map-view>
         <div id="validationServerUsernameFeedback" class="invalid-feedback " [ngClass]="{'d-inline':submitErrorMsg['lat']}">
             La Altura es Obligatoria
         </div>
