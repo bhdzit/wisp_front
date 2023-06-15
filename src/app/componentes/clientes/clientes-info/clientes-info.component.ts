@@ -9,6 +9,8 @@ import { SectorVO } from '../../sector/sector.component';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MapViewComponent } from 'src/app/shared-componentes/map-view.component';
+import { TorresService } from 'src/app/services/torres.services';
+import { TorreVO } from '../../torre/torre.component';
 @Component({
   selector: 'app-clientes-info',
   templateUrl: './clientes-info.component.html',
@@ -18,19 +20,20 @@ export class ClientesInfoComponent implements OnInit, AfterViewInit {
 
   submitErrorMsg: any = {};
   clienteVO: ClienteVO = {
-    sector: null,
+    torre: null,
     paquete: null,
     primer_pago: null,
     nueva: false,
-    editada: false
+    editada: false,
+    contrato:null
   };
 
   paquetesArr: PaqueteVO[] = [];
-  sectoresArr: SectorVO[] = [];
+  torreArr: TorreVO[] = [];
 
   @ViewChild(MapViewComponent) _mapComponent: MapViewComponent | undefined;
 
-  constructor(public dialog: MatDialogRef<ClientesInfoComponent>, @Inject(MAT_DIALOG_DATA) public data: ClienteVO, private _paquetesService: PaquetesService, private _sectorsService: SectorsService, private _clientesService: ClientesService) { }
+  constructor(public dialog: MatDialogRef<ClientesInfoComponent>, @Inject(MAT_DIALOG_DATA) public data: ClienteVO, private _paquetesService: PaquetesService,  private _clientesService: ClientesService,private _torresService:TorresService) { }
   ngAfterViewInit(): void {
     if (this.data != null)
       this._mapComponent?.addOnTapMarck({ lat: this.data.lat, lng: this.data.lng })
@@ -44,8 +47,8 @@ export class ClientesInfoComponent implements OnInit, AfterViewInit {
       this.paquetesArr = then;
     }));
 
-    let sectorsService = this._sectorsService.getSectors().pipe(map((then) => {
-      this.sectoresArr = then;
+    let sectorsService = this._torresService.getTorres().pipe(map((then) => {
+      this.torreArr = then;
     }));
 
 
@@ -61,7 +64,14 @@ export class ClientesInfoComponent implements OnInit, AfterViewInit {
       }
     );
 
-    this.clienteVO = this.data || {};
+    this.clienteVO = this.data || {
+      torre: null,
+      paquete: null,
+      primer_pago: null,
+      nueva: false,
+      editada: false,
+      contrato:null
+    };
 
 
   }

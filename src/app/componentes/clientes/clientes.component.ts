@@ -8,13 +8,14 @@ import Swal from 'sweetalert2';
 import { ClientesInfoComponent } from './clientes-info/clientes-info.component';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { SectorVO } from '../sector/sector.component';
+import { TorreVO } from '../torre/torre.component';
+import { PaqueteVO } from '../paquetes/paquetes.component';
 
 export interface ClienteVO {
   id?: number | null;
   cliente?: string;
-  usuario?: string;
   paquete?: number | null;
-  sector?: number | null;
+  torre?: number | null;
   tel1?: string;
   tel2?: string;
   fechaPago?: Date;
@@ -23,7 +24,9 @@ export interface ClienteVO {
   primer_pago?: string | null;
   nueva: boolean;
   editada: boolean;
-  sectorVO?: SectorVO | null;
+  torresVO?: TorreVO | null;
+  paqueteVO?: PaqueteVO | null;
+  contrato?: boolean | null
 }
 
 @Component({
@@ -36,7 +39,8 @@ export class ClientesComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'usuario', 'ubicacion', 'opciones'];
   dataSource: MatTableDataSource<ClienteVO> = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
+  filtradoTxt: string = "";
+  suspendidosCheck: boolean = false;
   constructor(private _dialog: MatDialog, private _clientesService: ClientesService) { }
   ngOnInit(): void {
     this._clientesService.getClientes().subscribe(then => {
@@ -79,6 +83,42 @@ export class ClientesComponent implements OnInit {
 
   }
 
+  async supenderCliente(cliente: ClienteVO) {
+    let res = await Swal.fire({
+      title: '¿Estas Seguro?',
+      text: "Este cleinte ya no aparecera en la lista de clientes!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si, Suspender!'
+    });
+
+    console.log(res);
+
+
+    // you logic goes here, whatever that may be 
+    // and it must return either True or False
+
+    if (res.isConfirmed) {
+      this._clientesService.suspenderCliente(cliente).subscribe(
+        then => {
+          this.dataSource.data = then;
+        }
+      );
+    }
+
+  }
+
+  activarCliente(cliente:ClienteVO){
+    this._clientesService.activarCliente(cliente).subscribe(
+      then => {
+        this.dataSource.data = then;
+      }
+    );
+  }
+
   async eliminarCliente(cliente: ClienteVO) {
 
     let res = await Swal.fire({
@@ -104,6 +144,23 @@ export class ClientesComponent implements OnInit {
           this.dataSource.data = then;
         }
       );
+    }
+  }
+
+  filtrado(e: KeyboardEvent) {
+    this.dataSource.filter = ((e.target as HTMLInputElement).value);
+  }
+
+  getClientesSuspendidos() {
+    if (this.suspendidosCheck) {
+      this._clientesService.getClientesSuspendidos().subscribe(then => {
+        this.dataSource.data = then;
+      });
+    }
+    else {
+      this._clientesService.getClientes().subscribe(then => {
+        this.dataSource.data = then;
+      });
     }
   }
 

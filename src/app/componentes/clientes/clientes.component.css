@@ -1,0 +1,9 @@
+.search-input{
+    width: unset !important;
+    display: inline-block;
+}
+
+.custom-checkbox{
+    display: inline-block;
+    margin-right: 25px;
+}

@@ -25,6 +25,25 @@
             <h3 class="card-title">Lista de Clientes</h3>
 
             <div class="card-tools">
+
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" id="customCheckbox2"
+                        (change)="suspendidosCheck=!suspendidosCheck;getClientesSuspendidos()"
+                        [checked]="suspendidosCheck">
+                    <label for="customCheckbox2" class="custom-control-label">Mostrar Suspendidos</label>
+                </div>
+
+
+                <div class="search-input mr-3">
+                    <div class="input-group ">
+                        <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                            aria-describedby="basic-addon2" (keyup)="filtrado($event)" [(ngModel)]="filtradoTxt">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+
                 <button (click)="agregarCliente()" type="button" class="btn btn-success">
                     <i class="fas fa-plus"></i>
                 </button>
@@ -48,15 +67,15 @@
 
                 <!-- Weight Column -->
                 <ng-container matColumnDef="usuario">
-                    <th mat-header-cell *matHeaderCellDef> Usuario / IP</th>
-                    <td mat-cell *matCellDef="let element"> {{element.usuario}}</td>
+                    <th mat-header-cell *matHeaderCellDef> Torre</th>
+                    <td mat-cell *matCellDef="let element"> {{element?.torresVO?.nombre}}</td>
                 </ng-container>
 
                 <!-- Symbol Column -->
                 <ng-container matColumnDef="ubicacion">
-                    <th mat-header-cell *matHeaderCellDef> Ubicacion </th>
+                    <th mat-header-cell *matHeaderCellDef> Paquete </th>
                     <td mat-cell *matCellDef="let element">
-                        Ver Torre
+                        {{element?.paqueteVO?.name}}
                     </td>
                 </ng-container>
 
@@ -64,13 +83,26 @@
                 <ng-container matColumnDef="opciones">
                     <th mat-header-cell *matHeaderCellDef> Opciones </th>
                     <td mat-cell *matCellDef="let element">
-                        <button (click)="editarCliente(element)" type="button" class="btn btn-warning">
-                            <i class="fas fa-pencil-alt"></i>
-                        </button>
+                        <div *ngIf="!suspendidosCheck">
+                            <button (click)="editarCliente(element)" type="button" class="btn btn-info">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
 
-                        <button (click)="eliminarCliente(element)" type="button" class="ml-1 btn btn-danger">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                            <button (click)="supenderCliente(element)" type="button" class="ml-1 btn btn-warning">
+                                <i class="fas fa-user-slash"></i>
+                            </button>
+
+                            <button (click)="eliminarCliente(element)" type="button" class="ml-1 btn btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+
+                        <div *ngIf="suspendidosCheck">
+                            <button (click)="activarCliente(element)" type="button" class="btn btn-info">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+
                     </td>
                 </ng-container>
 

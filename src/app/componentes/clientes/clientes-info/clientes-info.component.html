@@ -5,7 +5,7 @@
     <div class="col-sm-7">
         <div class="input-group has-validation">
 
-            <input placeholder="Usuario" type="text" class="form-control" [(ngModel)]="clienteVO.cliente"
+            <input #input placeholder="Usuario" type="text" class="form-control" [(ngModel)]="clienteVO.cliente" [value]="input.value.toUpperCase()"
                 [ngClass]="{'is-invalid':submitErrorMsg['cliente']}" aria-label="" aria-describedby="basic-addon1">
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                 {{submitErrorMsg['cliente']?.["msg"]}}
@@ -13,13 +13,16 @@
         </div>
     </div>
 
-    <div class="col-sm-5">
+    <div class="col-sm-5 mt-1">
         <div class="input-group has-validation">
-
-            <input placeholder="IP/USU" type="text" class="form-control" [(ngModel)]="clienteVO.usuario" 
-                [ngClass]="{'is-invalid':submitErrorMsg['usuario']}" aria-label="" aria-describedby="basic-addon1">
+            <select class="form-control" [(ngModel)]="clienteVO.contrato"  [ngClass]="{'is-invalid':submitErrorMsg['paquete']}">
+                <option [value]="null" disabled>-- Tipo de contrato</option>
+                <option [value]="false" >Prepago</option>
+                <option [value]="true" >Arrendamiento</option>
+               
+            </select>
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                {{submitErrorMsg['usuario']?.["msg"]}}
+                {{submitErrorMsg['contrato']?.["msg"]}}
             </div>
         </div>
     </div>
@@ -47,12 +50,12 @@
 
     <div class="col-sm-4 mt-1">
         <div class="input-group has-validation">
-            <select class="form-control" [(ngModel)]="clienteVO.sector" [ngClass]="{'is-invalid':submitErrorMsg['sector']}">
-                <option [value]="null" disabled>-- Seleccionar Sector</option>
-                <option *ngFor="let sector of sectoresArr" [value]="sector.id">{{sector.name}}</option>
+            <select class="form-control" [(ngModel)]="clienteVO.torre" [ngClass]="{'is-invalid':submitErrorMsg['torre']}">
+                <option [value]="null" disabled>-- Seleccionar torre</option>
+                <option *ngFor="let torre of torreArr" [value]="torre.id">{{torre.nombre}}</option>
             </select>
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                {{submitErrorMsg['sector']?.["msg"]}}
+                {{submitErrorMsg['torre']?.["msg"]}}
             </div>
         </div>
     </div>
