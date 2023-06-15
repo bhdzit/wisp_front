@@ -18,6 +18,10 @@ export class ClientesService {
     return this.http.get<ClienteVO[]>("api/clientes/getClientes", {});
   }
 
+  getClientesSuspendidos(): Observable<ClienteVO[]> {
+    return this.http.get<ClienteVO[]>("api/clientes/getClientesSuspendidos", {});
+  }
+
   saveClientes(clienteVO: ClienteVO): Observable<ClienteVO[]> {
     return this.http.post<ClienteVO[]>("api/clientes/saveCliente", clienteVO);
   }
@@ -26,14 +30,22 @@ export class ClientesService {
     return this.http.put<ClienteVO[]>("api/Clientes/updateCliente", clienteVO);
   }
 
-  destroyClientes(Paquete: ClienteVO): Observable<ClienteVO[]> {
+  destroyClientes(cliente: ClienteVO): Observable<ClienteVO[]> {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       }),
-      body: Paquete
+      body: cliente
     };
     return this.http.delete<ClienteVO[]>("api/Clientes/destroyCliente", options);
+  }
+  suspenderCliente(cliente: ClienteVO): Observable<ClienteVO[]> {
+
+    return this.http.post<ClienteVO[]>("api/Clientes/suspenderCliente", cliente);
+  }
+  activarCliente(cliente: ClienteVO): Observable<ClienteVO[]> {
+
+    return this.http.post<ClienteVO[]>("api/Clientes/activarCliente", cliente);
   }
 
 }
