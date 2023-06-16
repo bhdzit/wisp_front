@@ -28,6 +28,8 @@ import { ReportePagosComponent } from './componentes/pagos/reporte-pagos/reporte
 import { FiltroComponent } from './shared-componentes/filtro/filtro.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import {MatSortModule} from '@angular/material/sort';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { MatInputModule } from '@angular/material/input';
     MatPaginatorModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    MatInputModule
+    MatInputModule,
+    MatSortModule,
+    MatRadioModule
   ],
   providers: [AllHttpInterceptor,DeactivateGuard, {
     provide: MatDialogRef,

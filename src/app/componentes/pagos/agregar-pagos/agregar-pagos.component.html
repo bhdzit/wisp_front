@@ -30,22 +30,36 @@
                     <h3 class="card-title">Agregar Pago</h3>
                 </div>
             </div>
-            <div class="card-header border-0">
-                <div class="d-flex justify-content-between">
-                    <div class="col-sm-6">
-                        <mat-form-field class="example-full-width d-block">
-                            <mat-label>Cliente</mat-label>
-                            <input matInput aria-label="State" [matAutocomplete]="auto" [formControl]="clienteCtrl">
-                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)='seSelecionoCliente($event)'>
-                                <mat-option [id]="cliente.id+''" *ngFor="let cliente of filteredCliente | async"
-                                    [value]="cliente.cliente">
-                                    <span>{{cliente.cliente}}</span> |
-                                    <small>Sector: {{cliente?.sectorVO?.name}}</small>
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
+            <div class="card-header border-0 row">
+
+                <div class="col-sm-6">
+                    <mat-form-field class="example-full-width d-block">
+                        <mat-label>Cliente</mat-label>
+                        <input matInput aria-label="State" [matAutocomplete]="auto" [formControl]="clienteCtrl">
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='seSelecionoCliente($event)'>
+                            <mat-option [id]="cliente.id+''" *ngFor="let cliente of filteredCliente | async"
+                                [value]="cliente.cliente">
+                                <span>{{cliente.cliente}}</span> |
+                                <small>Torre: {{cliente?.torresVO?.nombre}}</small>
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="clienteSelecionado!=null"  class="col-2 col-md-1 ">
+                    <mat-radio-group (change)="quitarReferecnia()" [(ngModel)]="esReferenciaCheck" aria-label="Select an option">
+                        <mat-radio-button style="padding: unset;" [value]="false">Efectivo</mat-radio-button>
+                        <mat-radio-button style="padding: unset;" [value]="true">Deposito</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div *ngIf="clienteSelecionado!=null&&esReferenciaCheck"  class="col-sm-3">
+                    <div class="input-group has-validation">
+
+                        <input #input placeholder="Referencia" type="text" class="form-control" (blur)="validarReferencia(input.value.toUpperCase())"
+                            [value]="input.value.toUpperCase()" aria-label="" aria-describedby="basic-addon1">
+                        <div id="validationServerUsernameFeedback" class="invalid-feedback"></div>
                     </div>
                 </div>
+
 
             </div>
             <div class="box ml-3 mr-5"></div>
@@ -56,7 +70,6 @@
                         <button (click)="agregarPagoNuevo()" class="btn btn-success pull-right mr-2" href=""><i
                                 class="fas fa-plus" aria-hidden="true"></i></button>
                         <button (click)="realizarPago()" class="btn btn-success pull-right mr-2">Realizar pago</button>
-                        <button (click)="validarReferencia()"  class="btn btn-primary pull-right ">Validar Referencia</button>
                     </div>
                 </div>
             </div>
@@ -68,7 +81,6 @@
                             <th>#</th>
                             <th>Mes</th>
                             <th>Paquete</th>
-                            <th>METODO de Pago</th>
                             <th style="width: 80px">Costo</th>
                         </tr>
                     </thead>
@@ -86,11 +98,7 @@
                                     [(ngModel)]="pago.paquete" (change)="cambioDePaquete($event,pago)">
                                     <option *ngFor="let pkg of listaDePaquetes" [value]="pkg.id">{{pkg.name}}</option>
                                 </select> </td>
-                            <td><select class="form-control" id="payMethod" [(ngModel)]="pago.esReferencia" 
-                                    name="payMethod1">
-                                    <option [value]="false">Efectivo</option>
-                                    <option [value]="true">Deposito</option>
-                                </select></td>
+
                             <td>
                                 <p><b>$ {{pago.costo}}</b></p>
                             </td>
@@ -151,7 +159,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody id="extratbody" class="d-none">
+                    <tbody id="extratbody" >
 
 
 
@@ -162,18 +170,9 @@
                                     class="form-control extrasClient" name="costo1"> </td>
                         </tr>
                     </tbody>
-                    <tbody id="notebody" class="d-none">
-
-                        <tr>
-                            <td colspan="5">
-                                <div class="form-group"> <textarea placeholder="Nota" class="form-control"
-                                        name="nota1"></textarea> </div>
-                            </td>
-                        </tr>
-                    </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4"><b>TOTAL : </b></td>
+                            <td colspan="3"><b>TOTAL : </b></td>
                             <td><b id="totalPay">$ {{totalEnPagos}}</b></td>
                         </tr>
                     </tfoot>

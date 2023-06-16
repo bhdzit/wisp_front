@@ -15,11 +15,11 @@ export interface PagoVO {
   paquete: number;
   costo?: string;
   referencia?: string;
-  cliente: ClienteVO;
+  cliente: number;
   mesPagado: string;
   estatus?: boolean;
   esReferencia?: boolean;
-  Cliente?: ClienteVO;
+  clienteVO?: ClienteVO;
 }
 
 
@@ -40,11 +40,11 @@ export class AgregarPagosComponent implements OnInit {
   totalEnPagos: number = 0;
   ultimoPago: Date | null = null;
   ultimoPagoStr?: string = "";
-  mostrarReferencia: boolean = false;
-
+  listaDePagosRealizados: PagoVO[] = [];
+  esReferenciaCheck: boolean = false;
   constructor(private _clientesService: ClientesService, private _paquetesService: PaquetesService, private _pagosService: PagosService) {
-
   }
+
   ngOnInit(): void {
     this._clientesService.getClientes().subscribe(
       then => {
@@ -70,17 +70,18 @@ export class AgregarPagosComponent implements OnInit {
   }
 
   getPagosDeCliente() {
+    this.listaDePagosRealizados = [];
     this._pagosService.getPagosDeCliente({ cliente: this.clienteSelecionado.id }).subscribe(then => {
       if (then.length == 0) {
         this.ultimoPagoStr = "Aun no ha se ha hecho ninguna pago".toUpperCase()
         return;
       }
+      this.listaDePagosRealizados = then;
       then.map(pago => {
         let mes = Number(pago.mesPagado.split("-")[1]) - 1;
         let anio = Number(pago.mesPagado.split("-")[0]);
         let fechaDePago = new Date(anio, mes)
         if (this.ultimoPago == null || fechaDePago > this.ultimoPago) this.ultimoPago = fechaDePago;
-        console.log(pago.mesPagado, new Date(anio, mes))
       })
       this.ultimoPagoStr = "El ultimo pago fue " + this.ultimoPago?.toLocaleDateString();
       this.ultimoPagoStr = this.ultimoPagoStr.toUpperCase();
@@ -140,17 +141,49 @@ export class AgregarPagosComponent implements OnInit {
     );
   }
 
-  realizarPago() {
-    if (!this.exitePagoConMetodoReferencia()) {
-      this._pagosService.realizarPagos(this.listaDePagos).subscribe(then => {
-        this.mostrarMsj('El pago se realizo con exito!');
-        this.listaDePagos = [];
-        this.clienteSelecionado = null;
+  validarSiExitePago() {
+    let elPagoYaSeRealizo = false;
+    let mesPagado = "";
+    this.listaDePagos.map(pago => {
+      this.listaDePagosRealizados.map(pagoRealizado => {
+        if (pago.mesPagado == pagoRealizado.mesPagado) {
+          elPagoYaSeRealizo = true;
+          mesPagado = pago.mesPagado;
+        };
       });
-    }
-    else {
-      this.mostrarMsj('Parece que no se ha validado La referencia!');
-    }
+    });
+    if (elPagoYaSeRealizo) this.mostrarMsj(`El pago ${mesPagado} ya se realizo anteriormente!`.toUpperCase());
+    return elPagoYaSeRealizo;
+  }
+  realizarPago() {
+
+    if (this.validarSiExitePago()) return;
+    
+    let pagosSinReferencia = this.listaDePagos.filter(pago => pago.referencia != undefined);
+    console.log(pagosSinReferencia.length, this.listaDePagos.length)
+    
+    if (this.esReferenciaCheck && pagosSinReferencia.length != this.listaDePagos.length) {
+      this.mostrarMsj("Aun no has agregado una referencia");
+      return
+    };
+
+    this._pagosService.realizarPagos(this.listaDePagos).subscribe((then) => {
+      this.mostrarMsj('El pago se realizo con exito!');
+      let pago = then[0];
+      if (pago.id != undefined) this._pagosService.generarPDF(pago.id).subscribe(data => {
+
+        var downloadURL = window.URL.createObjectURL(data);
+        window.open(downloadURL, '_blank', 'width=1000, height=800');
+
+      });
+      this.listaDePagos = [];
+      this.clienteSelecionado = null;
+      this.clienteCtrl.setValue(null);
+      this.esReferenciaCheck=false;
+      this.listaDePagosRealizados=[];
+    });
+
+
   }
 
   mostrarMsj(msj: string) {
@@ -166,48 +199,47 @@ export class AgregarPagosComponent implements OnInit {
     return pagosConReferencia.length > 0
   }
 
-  async validarReferencia() {
-    const { value: referencia } = await Swal.fire({
-      title: 'Validar referencia',
-      input: 'text',
-      inputLabel: 'Ingrese referencia',
-      inputPlaceholder: 'Referencia'
-    })
 
-    if (referencia) {
-      this._pagosService.validarReferencia(referencia).subscribe(async (then) => {
-        console.log(then);
-        let titulo = "Se contraron coincidencias en la referencia: `" + referencia + "`";
-        let html = "";
-        if (then.esRefereciaValida) {
-          titulo = "La Referencia " + referencia + " es Valida"
-          //return res.isConfirmed
-        }
-        else {
-          then.coincidencia.map((item: PagoVO) => {
-            html += "Referencia:" + item.referencia + ", Cliente:" + item.Cliente?.cliente + ", Mes:" + item.mesPagado + "<br>";
-          });
-        }
-        let res = await Swal.fire({
-          title: titulo,
-          text: "¿Deseas asignar la referencia al pago ",
-          html: html,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          cancelButtonText: 'Cerrar',
-          confirmButtonText: 'Si, agregar!'
+  async validarReferencia(referencia: string) {
+
+    this._pagosService.validarReferencia(referencia).subscribe(async (then) => {
+      console.log(then);
+      let titulo = "Se encontraron coincidencias en la referencia: `" + referencia + "`";
+      let html = "";
+      if (then.esRefereciaValida) {
+        titulo = "La Referencia " + referencia + " es Valida"
+        //return res.isConfirmed
+      }
+      else {
+        then.coincidencia.map((item: PagoVO) => {
+          html += "Referencia:" + item.referencia + ", Cliente:" + item.clienteVO?.cliente + ", Mes:" + item.mesPagado + "<br>";
         });
-        if (res.isConfirmed) {
-          this.listaDePagos.map(pago => {
-            pago.referencia = referencia;
-          });
-        }
-
+      }
+      let res = await Swal.fire({
+        title: titulo,
+        text: "¿Deseas asignar la referencia al pago ",
+        html: html,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cerrar',
+        confirmButtonText: 'Si, agregar!'
       });
-    }
+      if (res.isConfirmed) {
+        this.listaDePagos.map(pago => {
+          pago.referencia = referencia;
+        });
+      }
 
+    });
+
+
+  }
+
+  quitarReferecnia(){
+    if(!this.esReferenciaCheck)
+    this.listaDePagos.map(pago=>{pago.referencia=undefined; return pago})
   }
 
 
