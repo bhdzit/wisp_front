@@ -10,12 +10,13 @@ import { ClientesService } from 'src/app/services/clientes.service';
 import { SectorVO } from '../sector/sector.component';
 import { TorreVO } from '../torre/torre.component';
 import { PaqueteVO } from '../paquetes/paquetes.component';
+import { Sort } from '@angular/material/sort';
 
 export interface ClienteVO {
   id?: number | null;
   cliente?: string;
   paquete?: number | null;
-  torre?: number | null;
+  torre: number | null;
   tel1?: string;
   tel2?: string;
   fechaPago?: Date;
@@ -36,7 +37,7 @@ export interface ClienteVO {
 })
 export class ClientesComponent implements OnInit {
 
-  displayedColumns: string[] = ['position', 'name', 'usuario', 'ubicacion', 'opciones'];
+  displayedColumns: string[] = ['position', 'name', 'torre', 'paquete', 'opciones'];
   dataSource: MatTableDataSource<ClienteVO> = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   filtradoTxt: string = "";
@@ -111,7 +112,7 @@ export class ClientesComponent implements OnInit {
 
   }
 
-  activarCliente(cliente:ClienteVO){
+  activarCliente(cliente: ClienteVO) {
     this._clientesService.activarCliente(cliente).subscribe(
       then => {
         this.dataSource.data = then;
@@ -164,4 +165,32 @@ export class ClientesComponent implements OnInit {
     }
   }
 
+  sortData(sort: Sort) {
+    const data = this.dataSource.data.slice();
+    if (!sort.active || sort.direction === '') {
+      this.dataSource.data = data;
+      return;
+    }
+
+    this.dataSource.data = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'name':
+          return compare(a.cliente, b.cliente, isAsc);
+        case 'torre':
+          return compare(a.torre, b.torre, isAsc);
+        case 'paquete':
+          return compare(a.paquete, b.paquete, isAsc);
+
+        default:
+          return 0;
+      }
+    });
+  }
+
+}
+
+function compare(a: number | string | null| undefined, b: number | string | null | undefined, isAsc: boolean) {
+  if(a==null||b==null) return 0;
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
