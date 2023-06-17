@@ -1,0 +1,13 @@
+.search-input{
+    width: unset !important;
+    display: inline-block;
+}
+
+.filtro-span{
+    display: inline-flex;
+    margin-left: 10px;
+}
+
+.filtro-span:hover{
+    cursor: pointer;
+}

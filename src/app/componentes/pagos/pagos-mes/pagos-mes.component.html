@@ -1,1 +1,149 @@
-<p>pagos-mes works!</p>
+<script src="https://kit.fontawesome.com/015cfc4544.js" crossorigin="anonymous"></script>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Pagos</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item">Pagos</li>
+                    <li class="breadcrumb-item active">Pagos del mes</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card ml-3 mr-3">
+        <div class="card-header">
+            <h3 class="card-title">Pagos del mes</h3>
+
+            <div class="card-tools">
+                <div class="search-input mr-1">
+                    <div class="input-group ">
+                        <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                            aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="search-input mr-1">
+                    <div class="input-group ">
+                        <input type="month" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                            [(ngModel)]="mesSelecionado" aria-describedby="basic-addon2" (change)="seCambioFecha()">
+
+                    </div>
+                </div>
+                <button (click)="mostrarFiltrado()" type="button" class="btn btn-success ml-5">
+                    <i class="fas fa-filter"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div *ngFor="let filtro of listaFiltro;" class="filtro-span">
+                <span (click)="eliminarFiltro(filtro)" class="badge badge-success mb-2">{{filtro.name}} <i
+                        class="fas fa-minus"></i></span>
+            </div>
+
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort
+                (matSortChange)="sortData($event)">
+                <!-- Position Column -->
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> No.
+                    </th>
+                    <td mat-cell *matCellDef="let element;let i=index">{{(paginator.pageIndex*paginator.pageSize)+
+                        (i+1)}}</td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cliente}} </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="mesPagado">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Mes pagado </th>
+                    <td mat-cell *matCellDef="let element"> {{formatoMesPagado(element.pago)}}
+                        <small *ngIf="element.pago==undefined" class="badge badge-danger">
+                            <i class="far fa-clock"></i> PAGO PENDIENTE</small>
+                        <small *ngIf="element.pago!=undefined&&element.pago?.referencia==null"
+                            class="badge badge-success">
+                            <i class="far fa-clock"></i> EFECTIVO</small>
+                        <small *ngIf="element.pago!=undefined&&element.pago?.referencia!=null"
+                            class="badge badge-success">
+                            <i class="far fa-clock"></i> REFERENCIA </small>
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="fechaDePago">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de pago </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{formatoFechaDePago(element.pago?.createdAt)}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="torre">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Sector</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.torresVO?.nombre}}
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="opciones">
+                    <th mat-header-cell *matHeaderCellDef> Opciones </th>
+                    <td mat-cell *matCellDef="let element">
+
+
+                        <button type="button" class="ml-1 btn btn-danger">
+                            <i class="fas fa-trash"></i>
+                        </button>
+
+                        <button *ngIf="element.pago!=undefined" type="button" class="ml-1 btn btn-success" (click)="imprimerPago(element.pago.id)">
+                            <i class="fas fa-print"></i>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <!-- Disclaimer column -->
+                <ng-container matColumnDef="total">
+
+                    <td mat-footer-cell *matFooterCellDef [colSpan]="2">
+                        <h3> Total : $ 0.00</h3>
+                    </td>
+                </ng-container>
+
+                <!-- Disclaimer column -->
+                <ng-container matColumnDef="disclaimer">
+                    <td mat-footer-cell *matFooterCellDef [colSpan]="displayedColumns.length">
+                        <h3> No se Encontraron datos.</h3>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-footer-row [ngClass]="{'d-none':dataSource.data.length!=0}" *matFooterRowDef="['disclaimer']">
+                </tr>
+                <tr mat-footer-row *matFooterRowDef="['total']"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+        </div>
+        <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5,10]" [showFirstLastButtons]="true">
+        </mat-paginator>
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
