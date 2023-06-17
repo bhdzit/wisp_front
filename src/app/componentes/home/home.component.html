@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Blank Page</title>
+    <title>Wisp</title>
 
 
 </head>
@@ -29,7 +29,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <div class="elevation-3 mb-1">
-                <img src="../../assets/img/logo2.png" alt="AdminLTE Logo" class="brand-image  ">
+                <img src="../../assets/img/logo.png" alt="AdminLTE Logo" class="brand-image  ">
                 <span class="brand-text font-weight-light">.</span>
             </div>
 
@@ -76,15 +76,15 @@
                             </a>
                         </li>
                         <li class="nav-item menu-open">
-                            <a  class="nav-link">
+                            <a class="nav-link">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
                                     Pagos
                                     <i class="fas fa-angle-left right"></i>
-                                   
+
                                 </p>
                             </a>
-                            <ul class="nav nav-treeview" >
+                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a routerLink="pagos/agregar_pago" routerLinkActive="active" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -102,10 +102,18 @@
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Reporte de pagos</p>
                                     </a>
-                                </li>                             -->
+                                </li>-->
+
                             </ul>
                         </li>
-
+                        <li class="nav-item logout" (click)="logOut()">
+                            <a class="nav-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <p>
+                                    Salir
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
