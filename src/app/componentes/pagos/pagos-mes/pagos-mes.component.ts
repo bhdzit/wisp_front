@@ -30,6 +30,7 @@ export class PagosMesComponent implements OnInit {
   listaDeClientesBkp: PagoDetalle[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   sortedData: PagoDetalle[] = [];
+  filtroEnPagos: number = 1;
 
   constructor(public _dialog: MatDialog, private _pagosService: PagosService, private _clientesService: ClientesService, private _liveAnnouncer: LiveAnnouncer) { }
 
@@ -56,6 +57,7 @@ export class PagosMesComponent implements OnInit {
     this._clientesService.getClientes().subscribe(then => {
       this.listaDeClientes = then;
       this.organizarDatos();
+      this.filtroEnPagos = 1;
     });
 
   }
@@ -104,11 +106,19 @@ export class PagosMesComponent implements OnInit {
     return fecha.toLocaleDateString();
 
   }
+  filtrado(e: KeyboardEvent) {
+    this.dataSource.filter = ((e.target as HTMLInputElement).value);
+  }
+
 
   aplicarFiltro() {
     let torres = this.listaFiltro.filter(item => item.tipoDeFiltro == "torre");
     let data = this.listaDeClientesBkp.filter(cliente => torres.some(torre => torre.id == cliente?.torresVO?.id) || torres.length == 0);
 
+    if (this.filtroEnPagos == 2)
+      data = data.filter(cliente => cliente.pago == undefined);
+    if (this.filtroEnPagos == 3)
+      data = data.filter(cliente => cliente?.pago?.costo != null && Number(cliente?.pago?.costo) == 0);
     // let sectores = this.listaFiltro.filter(item => item.tipoDeFiltro == "sector");
     // data = data.filter(cliente => sectores.some(sector => sector.id == cliente?.torre) || sectores.length == 0);
 
@@ -134,7 +144,7 @@ export class PagosMesComponent implements OnInit {
           return compare(a.name, b.name, isAsc);
         case 'mesPagado':
 
-          return compare( this.getTipoPago(a.pago) , this.getTipoPago(b.pago), isAsc);
+          return compare(this.getTipoPago(a.pago), this.getTipoPago(b.pago), isAsc);
         case 'fechaDePago':
           return compare(a.pago?.createdAt, b.pago?.createdAt, isAsc);
         case 'torre':
@@ -156,11 +166,11 @@ export class PagosMesComponent implements OnInit {
     });
   }
 
-  getTipoPago(pago:PagoVO):number{
-    if(pago==undefined)return 0;
-    if(pago?.referencia==null) return 1;
+  getTipoPago(pago: PagoVO): number {
+    if (pago == undefined) return 0;
+    if (pago?.referencia == null) return 1;
     return 2;
-    
+
   }
 
 
