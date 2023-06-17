@@ -108,7 +108,15 @@
                     </td>
                 </ng-container>
 
+                <!-- Disclaimer column -->
+                <ng-container matColumnDef="disclaimer">
+                    <td mat-footer-cell *matFooterCellDef [colSpan]="displayedColumns.length">
+                        <h3> No se encontraron datos.</h3>
+                    </td>
+                </ng-container>
+
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-footer-row [ngClass]="{'d-none':dataSource.data.length!=0}" *matFooterRowDef="['disclaimer']"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
         </div>
