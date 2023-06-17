@@ -170,7 +170,10 @@ export class PagosMesComponent implements OnInit {
     if (pago == undefined) return 0;
     if (pago?.referencia == null) return 1;
     return 2;
+  }
 
+  eliminarFila(element:ClienteVO){
+    this.dataSource.data = this.dataSource.data.filter(item => element != item);
   }
 
 
