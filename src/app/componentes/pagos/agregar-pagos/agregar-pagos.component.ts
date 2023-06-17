@@ -20,9 +20,13 @@ export interface PagoVO {
   estatus?: boolean;
   esReferencia?: boolean;
   clienteVO?: ClienteVO;
+  extras?: Extra[];
 }
 
-
+export interface Extra {
+  descripcion: string,
+  precio: number | null
+}
 
 @Component({
   selector: 'app-agregar-pagos',
@@ -42,6 +46,8 @@ export class AgregarPagosComponent implements OnInit {
   ultimoPagoStr?: string = "";
   listaDePagosRealizados: PagoVO[] = [];
   esReferenciaCheck: boolean = false;
+  listaExtras: Extra[] = [];
+  isSubmit:boolean=false;
   constructor(private _clientesService: ClientesService, private _paquetesService: PaquetesService, private _pagosService: PagosService) {
   }
 
@@ -117,6 +123,13 @@ export class AgregarPagosComponent implements OnInit {
     this.actualizarTotal();
   }
 
+  agregarExtra() {
+    this.listaExtras.push({
+      descripcion: '',
+      precio: null
+    });
+  }
+
   private _filterClientes(value: string): ClienteVO[] {
     const filterValue = value.toLowerCase();
 
@@ -133,11 +146,20 @@ export class AgregarPagosComponent implements OnInit {
     this.actualizarTotal();
   }
 
+  eliminarExtra(index: number) {
+    this.listaExtras = this.listaExtras.filter((extra, i) => index != i);
+    this.actualizarTotal();
+  }
+
   actualizarTotal() {
     let initialValue = 0;
     this.totalEnPagos = this.listaDePagos.reduce(
       (accumulator, pago) => accumulator + Number(pago.costo),
       initialValue
+    );
+    this.totalEnPagos = this.listaExtras.reduce(
+      (accumulator, extra) => accumulator + Number(extra.precio),
+      this.totalEnPagos
     );
   }
 
@@ -157,17 +179,22 @@ export class AgregarPagosComponent implements OnInit {
   }
   realizarPago() {
 
+    this.isSubmit=true;
+
+    let extrasSinDatos=this.listaExtras.filter(extra=>extra.descripcion==''||extra.precio==null)
+    if(extrasSinDatos.length>0) return;
     if (this.validarSiExitePago()) return;
-    
+
     let pagosSinReferencia = this.listaDePagos.filter(pago => pago.referencia != undefined);
-    console.log(pagosSinReferencia.length, this.listaDePagos.length)
-    
+  
+
     if (this.esReferenciaCheck && pagosSinReferencia.length != this.listaDePagos.length) {
       this.mostrarMsj("Aun no has agregado una referencia");
-      return
+      return;
     };
 
-    this._pagosService.realizarPagos(this.listaDePagos).subscribe((then) => {
+
+    this._pagosService.realizarPagos(this.listaDePagos,this.listaExtras).subscribe((then) => {
       this.mostrarMsj('El pago se realizo con exito!');
       let pago = then[0];
       if (pago.id != undefined) this._pagosService.generarPDF(pago.id).subscribe(data => {
@@ -179,8 +206,8 @@ export class AgregarPagosComponent implements OnInit {
       this.listaDePagos = [];
       this.clienteSelecionado = null;
       this.clienteCtrl.setValue(null);
-      this.esReferenciaCheck=false;
-      this.listaDePagosRealizados=[];
+      this.esReferenciaCheck = false;
+      this.listaDePagosRealizados = [];
     });
 
 
@@ -237,9 +264,9 @@ export class AgregarPagosComponent implements OnInit {
 
   }
 
-  quitarReferecnia(){
-    if(!this.esReferenciaCheck)
-    this.listaDePagos.map(pago=>{pago.referencia=undefined; return pago})
+  quitarReferecnia() {
+    if (!this.esReferenciaCheck)
+      this.listaDePagos.map(pago => { pago.referencia = undefined; return pago })
   }
 
 

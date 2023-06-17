@@ -34,3 +34,7 @@ mat-radio-button {
     padding: unset !important;
 }
 
+.extrasClient{
+    background: unset;
+    border: unset;
+}

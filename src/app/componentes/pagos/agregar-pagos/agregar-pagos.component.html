@@ -45,17 +45,19 @@
                         </mat-autocomplete>
                     </mat-form-field>
                 </div>
-                <div *ngIf="clienteSelecionado!=null"  class="col-2 col-md-1 ">
-                    <mat-radio-group (change)="quitarReferecnia()" [(ngModel)]="esReferenciaCheck" aria-label="Select an option">
+                <div *ngIf="clienteSelecionado!=null" class="col-2 col-md-1 ">
+                    <mat-radio-group (change)="quitarReferecnia()" [(ngModel)]="esReferenciaCheck"
+                        aria-label="Select an option">
                         <mat-radio-button style="padding: unset;" [value]="false">Efectivo</mat-radio-button>
                         <mat-radio-button style="padding: unset;" [value]="true">Deposito</mat-radio-button>
                     </mat-radio-group>
                 </div>
-                <div *ngIf="clienteSelecionado!=null&&esReferenciaCheck"  class="col-sm-3">
+                <div *ngIf="clienteSelecionado!=null&&esReferenciaCheck" class="col-sm-3">
                     <div class="input-group has-validation">
 
-                        <input #input placeholder="Referencia" type="text" class="form-control" (blur)="validarReferencia(input.value.toUpperCase())"
-                            [value]="input.value.toUpperCase()" aria-label="" aria-describedby="basic-addon1">
+                        <input #input placeholder="Referencia" type="text" class="form-control"
+                            (blur)="validarReferencia(input.value.toUpperCase())" [value]="input.value.toUpperCase()"
+                            aria-label="" aria-describedby="basic-addon1">
                         <div id="validationServerUsernameFeedback" class="invalid-feedback"></div>
                     </div>
                 </div>
@@ -64,11 +66,14 @@
             </div>
             <div class="box ml-3 mr-5"></div>
             <div [ngClass]="{'d-none':clienteSelecionado==null}" class="card-header ">
-                <div class="d-flex justify-content-between">
-                    <h3 class="col-9 card-title">Realizar Pago <span class="text-danger">{{ultimoPagoStr}}</span></h3>
-                    <div class="col-3">
-                        <button (click)="agregarPagoNuevo()" class="btn btn-success pull-right mr-2" href=""><i
-                                class="fas fa-plus" aria-hidden="true"></i></button>
+                <div class="d-flex justify-content-between row">
+                    <h3 class="col-6 col-md-6  col-lg-8 card-title">Realizar Pago <span
+                            class="text-danger">{{ultimoPagoStr}}</span></h3>
+                    <div class="col-6 col-md-6 col-lg-4">
+                        <button (click)="agregarExtra()" class="btn btn-info pull-right mr-2" href=""><i
+                                class="fas fa-plus" aria-hidden="true"></i> Agregar Extra</button>
+                        <button (click)="agregarPagoNuevo()" class="btn btn-primary pull-right mr-2" href=""><i
+                                class="fas fa-plus" aria-hidden="true"></i> Agregar Pago</button>
                         <button (click)="realizarPago()" class="btn btn-success pull-right mr-2">Realizar pago</button>
                     </div>
                 </div>
@@ -105,73 +110,39 @@
                         </tr>
                     </tbody>
 
-                    <tbody class="d-none">
-                        <tr id="depositRow">
-                            <td colspan="3">
-                                <!-- radio -->
-                                <div class="form-group">
-                                    <label class="">
-                                        <div class="iradio_flat-blue checked" aria-checked="false" aria-disabled="false"
-                                            style="position: relative;"><input type="radio" name="r3" class="flat-red"
-                                                value="OXXO" checked="" style="position: absolute; opacity: 0;"><ins
-                                                class="iCheck-helper"
-                                                style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
-                                        </div>
-                                        OXXO
-                                    </label>
-                                    <label class="">
-                                        <div class="iradio_flat-blue" aria-checked="false" aria-disabled="false"
-                                            style="position: relative;"><input type="radio" name="r3" class="flat-red"
-                                                value="BANAMEX" style="position: absolute; opacity: 0;"><ins
-                                                class="iCheck-helper"
-                                                style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
-                                        </div>
-                                        BANAMEX
-                                    </label>
-                                    <label class="">
-                                        <div class="iradio_flat-blue" aria-checked="false" aria-disabled="false"
-                                            style="position: relative;"><input type="radio" name="r3" class="flat-red"
-                                                value="BANCOPPEL" style="position: absolute; opacity: 0;"><ins
-                                                class="iCheck-helper"
-                                                style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
-                                        </div>
-                                        BANCOPPEL
-                                    </label>
-                                </div>
-                            </td>
-                            <td colspan="2">
-                                <input type="datetime-local" name="depositDate" id="depositDate"
-                                    class="form-control pull-right" required="required">
-                            </td>
-
-                        </tr>
-                    </tbody>
-                    <thead class="d-none">
+                    <thead *ngIf="listaExtras.length>0">
                         <tr>
-                            <th colspan="3">Extras</th>
-                            <th colspan="2">
-                                <div class="form-group">
-                                    <input type="button" id="btnAddNote" onclick="addNote()" style="margin-right: 10px;"
-                                        class="btn btn-success pull-right" value="Agregar Nota" disabled="">
-                                    <input type="button" onclick="addExtra()" style="margin-right: 10px;"
-                                        class="btn btn-success pull-right" value="Agregar Extra">
-                                </div>
-                            </th>
+                            <th colspan="5">Extras</th>
                         </tr>
                     </thead>
-                    <tbody id="extratbody" >
-
-
-
-                        <tr>
-                            <td colspan="3"> <input placeholder="Desscripcion" class="form-control" name="descripcion1">
+                    <tbody id="extratbody">
+                        <tr *ngFor="let extra of listaExtras;let i=index">
+                            <td style="width: 30px" class="eliminarPago" (click)="eliminarExtra(i)">
+                                <i id="eliminar" style="color:#F00;margin-top: 10px;" class="fas fa-minus-circle"
+                                    aria-hidden="true">
+                                </i>
                             </td>
-                            <td colspan="3"> <input onchange="setTotal()" placeholder="Costo"
-                                    class="form-control extrasClient" name="costo1"> </td>
+                            <td colspan="2">
+                                <input placeholder="Descripción" [(ngModel)]="extra.descripcion" class="form-control"  [ngClass]="{'is-invalid':extra.descripcion==''&&isSubmit}" name="descripcion1">
+                                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                    La descripcion es requerida
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex"><label style="margin-top: 7px;"> $</label>
+                                    <input placeholder="Costo" [(ngModel)]="extra.precio" [ngClass]="{'is-invalid':extra.precio==null&&isSubmit}"
+                                        class="form-control extrasClient" name="costo1" (blur)="actualizarTotal()">
+                                        <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                            El precio es requerido
+                                        </div>
+                                        
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
+
                             <td colspan="3"><b>TOTAL : </b></td>
                             <td><b id="totalPay">$ {{totalEnPagos}}</b></td>
                         </tr>
