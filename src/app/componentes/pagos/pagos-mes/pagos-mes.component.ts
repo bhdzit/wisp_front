@@ -77,7 +77,7 @@ export class PagosMesComponent implements OnInit {
 
   mostrarFiltrado() {
     const dialogRef = this._dialog.open(FiltroComponent, {
-      width: '50vw', enterAnimationDuration: "1000ms"
+      width: '20vw', enterAnimationDuration: "1000ms"
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -107,14 +107,14 @@ export class PagosMesComponent implements OnInit {
 
   aplicarFiltro() {
     let torres = this.listaFiltro.filter(item => item.tipoDeFiltro == "torre");
-    let data = this.listaDeClientesBkp.filter(cliente => torres.some(torre => torre.id == cliente?.torresVO?.nombre) || torres.length == 0);
+    let data = this.listaDeClientesBkp.filter(cliente => torres.some(torre => torre.id == cliente?.torresVO?.id) || torres.length == 0);
 
-    let sectores = this.listaFiltro.filter(item => item.tipoDeFiltro == "sector");
-    data = data.filter(cliente => sectores.some(sector => sector.id == cliente?.torre) || sectores.length == 0);
+    // let sectores = this.listaFiltro.filter(item => item.tipoDeFiltro == "sector");
+    // data = data.filter(cliente => sectores.some(sector => sector.id == cliente?.torre) || sectores.length == 0);
 
-    let paquetes = this.listaFiltro.filter(item => item.tipoDeFiltro == "paquete");
-    data = data.filter(cliente => paquetes.some(pkg => pkg.id == cliente?.paquete) || paquetes.length == 0);
-    console.log(paquetes);
+    // let paquetes = this.listaFiltro.filter(item => item.tipoDeFiltro == "paquete");
+    // data = data.filter(cliente => paquetes.some(pkg => pkg.id == cliente?.paquete) || paquetes.length == 0);
+    // console.log(paquetes);
 
     this.dataSource.data = data;
 

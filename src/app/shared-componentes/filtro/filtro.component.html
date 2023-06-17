@@ -1,1 +1,50 @@
-<p>filtro works!</p>
+<div class="row ml-2 mr-2 mt-4 mb-4">
+    <div class="col-sm-12">
+
+        <div class="form-group">
+            <div class=" custom-control custom-checkbox">
+                <input id="allTorresCheck" class="custom-control-input custom-control-input-primary custom-control-input-outline"
+                    type="checkbox" (change)="setAll($event)">
+                <label  for="allTorresCheck" class="custom-control-label">Torre</label>
+            </div>
+            <div class="contenedor_filtro">
+                <div *ngFor="let torre of torres;" class="ml-3 custom-control custom-checkbox">
+                    <input class="custom-control-input custom-control-input-primary custom-control-input-outline"
+                        type="checkbox" [id]="'torre'+torre['id']" [(ngModel)]="torre['value']">
+                    <label [for]="'torre'+torre['id']" class="custom-control-label">{{torre["nombre"]}}</label>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <!-- <div class="col-sm-4">
+
+        <div class="form-group">
+            <label>Sector</label>
+            <div class="contenedor_filtro">
+                <div *ngFor="let sector of sectores;" class="ml-3 custom-control custom-checkbox">
+                    <input class="custom-control-input custom-control-input-primary custom-control-input-outline"
+                        type="checkbox" [id]="'sector'+sector['id']" [(ngModel)]="sector['value']">
+                    <label [for]="'sector'+sector['id']" class="custom-control-label">{{sector["name"]}}</label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+
+        <div class="form-group">
+            <label>Paquete</label>
+            <div class="contenedor_filtro">
+                <div *ngFor="let paquete of paquetes;" class="ml-3 custom-control custom-checkbox">
+                    <input class="custom-control-input custom-control-input-primary custom-control-input-outline"
+                        type="checkbox" [id]="'paquete'+paquete['id']" [(ngModel)]="paquete['value']">
+                    <label [for]="'paquete'+paquete['id']" class="custom-control-label">{{paquete["name"]}}</label>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <button (click)="aplicarFiltro()" class="btn btn-primary ml-1">Aplicar</button>
+</div>

@@ -36,7 +36,7 @@ export class MapViewComponent implements OnInit {
                 this.mapDiv.nativeElement,
                 layers.vector.normal.map,
                 {
-                    pixelRatio: window.devicePixelRatio,
+                    pixelRatio: window.devicePixelRatio || 1,
                     center: { lat: 20.2921006, lng: -99.186517 },
                     zoom: 13,
 
@@ -57,8 +57,37 @@ export class MapViewComponent implements OnInit {
             if("lat" in this.punto)
             this.addOnTapMarck({ lat: this.punto.lat, lng: this.punto.lng });
             this.addClickEvent();
+            var bbox = new H.geo.Rect(42.3736,-71.0751,42.3472,-71.0408);
+
         }
     }
+
+     changeFeatureStyle(map:any){
+        // get the vector provider from the base layer
+        var provider = map.getBaseLayer().getProvider();
+      
+        // get the style object for the base layer
+        var parkStyle = provider.getStyle();
+      
+        var changeListener = () => {
+          if (parkStyle.getState() === H.map.Style.State.READY) {
+            parkStyle.removeEventListener('change', changeListener);
+      
+            // query the sub-section of the style configuration
+            // the call removes the subsection from the original configuration
+            var parkConfig = parkStyle.extractConfig(['landuse.park', 'landuse.builtup']);
+            // change the color, for the description of the style section
+            // see the Developer's guide
+            parkConfig.layers.landuse.park.draw.polygons.color = '#2ba815'
+            parkConfig.layers.landuse.builtup.draw.polygons.color = '#676d67'
+      
+            // merge the configuration back to the base layer configuration
+            parkStyle.mergeConfig(parkConfig);
+          }
+        };
+      
+        parkStyle.addEventListener('change', changeListener);
+      }
 
     addClickEvent() {
         this.map?.addEventListener('tap', (evt: any) => {
