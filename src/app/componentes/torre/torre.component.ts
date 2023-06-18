@@ -26,7 +26,7 @@ export class TorreComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'opciones'];
-  dataSource: MatTableDataSource<TorreVO> = new MatTableDataSource([{}]);
+  dataSource: MatTableDataSource<TorreVO> = new MatTableDataSource();
 
   filtradoTxt:string="";
 
