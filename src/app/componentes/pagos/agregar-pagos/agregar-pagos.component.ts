@@ -47,7 +47,8 @@ export class AgregarPagosComponent implements OnInit {
   listaDePagosRealizados: PagoVO[] = [];
   esReferenciaCheck: boolean = false;
   listaExtras: Extra[] = [];
-  isSubmit:boolean=false;
+  isSubmit: boolean = false;
+  primerPago!: Date;
   constructor(private _clientesService: ClientesService, private _paquetesService: PaquetesService, private _pagosService: PagosService) {
   }
 
@@ -71,15 +72,17 @@ export class AgregarPagosComponent implements OnInit {
   seSelecionoCliente(e: MatAutocompleteSelectedEvent) {
     this.clienteSelecionado = this.listaDeClientes.filter(cliente => (cliente?.id + "") == e.option.id)[0];
     this.listaDePagos = [];
-    this.agregarPagoNuevo();
+    this.setPrimerPago();
     this.getPagosDeCliente();
   }
 
   getPagosDeCliente() {
+    this.ultimoPago=null;
     this.listaDePagosRealizados = [];
     this._pagosService.getPagosDeCliente({ cliente: this.clienteSelecionado.id }).subscribe(then => {
       if (then.length == 0) {
-        this.ultimoPagoStr = "Aun no ha se ha hecho ninguna pago".toUpperCase()
+        this.ultimoPagoStr = "Aun no ha se ha hecho ninguna pago".toUpperCase();
+        this.agregarPagoNuevo();
         return;
       }
       this.listaDePagosRealizados = then;
@@ -91,7 +94,7 @@ export class AgregarPagosComponent implements OnInit {
       })
       this.ultimoPagoStr = "El ultimo pago fue " + this.ultimoPago?.toLocaleDateString();
       this.ultimoPagoStr = this.ultimoPagoStr.toUpperCase();
-      console.log(this.ultimoPago);
+      this.agregarPagoNuevo();
     });
   }
 
@@ -107,8 +110,10 @@ export class AgregarPagosComponent implements OnInit {
   }
 
   generarMesDePago(): string {
+    if(this.ultimoPago!=null) return this.ultimoPago.getFullYear() + "-" + ("00" + (this.ultimoPago.getMonth() + 2)).slice(-2);
     if (this.listaDePagos.length == 0) {
       let fecha = new Date();
+      if(this.primerPago > fecha) return this.primerPago.getFullYear() + "-" + ("00" + (this.primerPago.getMonth() + 1)).slice(-2);
       return fecha.getFullYear() + "-" + ("00" + (fecha.getMonth() + 1)).slice(-2);
     }
     let ultimoMesPagado = this.listaDePagos[this.listaDePagos.length - 1].mesPagado;
@@ -134,6 +139,14 @@ export class AgregarPagosComponent implements OnInit {
     const filterValue = value.toLowerCase();
 
     return this.listaDeClientes.filter(cliente => cliente?.cliente?.toLowerCase().includes(filterValue));
+  }
+
+  setPrimerPago() {
+    console.log(this.clienteSelecionado.primer_pago);
+    let fechaStr = this.clienteSelecionado.primer_pago.split("-");
+    this.primerPago = new Date(fechaStr[0], (fechaStr[1] - 1), fechaStr[2])
+    console.log(this.primerPago)
+
   }
 
   cambioDePaquete(evt: Event, pagoSelecionado: PagoVO) {
@@ -179,14 +192,14 @@ export class AgregarPagosComponent implements OnInit {
   }
   realizarPago() {
 
-    this.isSubmit=true;
+    this.isSubmit = true;
 
-    let extrasSinDatos=this.listaExtras.filter(extra=>extra.descripcion==''||extra.precio==null)
-    if(extrasSinDatos.length>0) return;
+    let extrasSinDatos = this.listaExtras.filter(extra => extra.descripcion == '' || extra.precio == null)
+    if (extrasSinDatos.length > 0) return;
     if (this.validarSiExitePago()) return;
 
     let pagosSinReferencia = this.listaDePagos.filter(pago => pago.referencia != undefined);
-  
+
 
     if (this.esReferenciaCheck && pagosSinReferencia.length != this.listaDePagos.length) {
       this.mostrarMsj("Aun no has agregado una referencia");
@@ -194,7 +207,7 @@ export class AgregarPagosComponent implements OnInit {
     };
 
 
-    this._pagosService.realizarPagos(this.listaDePagos,this.listaExtras).subscribe((then) => {
+    this._pagosService.realizarPagos(this.listaDePagos, this.listaExtras).subscribe((then) => {
       this.mostrarMsj('El pago se realizo con exito!');
       let pago = then[0];
       if (pago.id != undefined) this._pagosService.generarPDF(pago.id).subscribe(data => {
