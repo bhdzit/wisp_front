@@ -29,6 +29,15 @@ export class PagosService {
     getPagosDelMes(mesPagado: string): Observable<any> {
         return this.http.get<any>("api/pagos/getPagosDelMes?mesPagado="+mesPagado);
     }
+    eliminarPago(pagoVO: PagoVO): Observable<any> {
+        const options = {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json'
+            }),
+            body: pagoVO
+          };
+        return this.http.delete<any>("api/pagos/eliminarPago",options);
+    }
     generarPDF(idPago: number): Observable<any> {
         const httpOptions = {
             responseType: 'blob' as 'json'

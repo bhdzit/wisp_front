@@ -40,8 +40,8 @@
 
                 <div class="search-input mr-1">
                     <div class="input-group ">
-                        <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar" (keyup)="filtrado($event)"
-                            aria-describedby="basic-addon2">
+                        <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                            (keyup)="filtrado($event)" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
                         </div>
@@ -87,8 +87,10 @@
                 <ng-container matColumnDef="mesPagado">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Mes pagado </th>
                     <td mat-cell *matCellDef="let element"> {{formatoMesPagado(element.pago)}}
-                        <small *ngIf="element.pago==undefined" class="badge badge-danger">
+                        <small *ngIf="element.pago==undefined&&esPagoRequerido(element.primer_pago)" class="badge badge-danger">
                             <i class="far fa-clock"></i> PAGO PENDIENTE</small>
+                        <small *ngIf="element.pago==undefined&&!esPagoRequerido(element.primer_pago)"  class="badge badge-warning">
+                            <i class="far fa-clock"></i> EL PRIMER PAGO ES: {{formatoDefecha(element.primer_pago)}}</small>
                         <small *ngIf="element.pago!=undefined&&element.pago?.referencia==null"
                             class="badge badge-success">
                             <i class="far fa-clock"></i> EFECTIVO</small>
@@ -119,14 +121,17 @@
                     <td mat-cell *matCellDef="let element">
 
 
-                        <button type="button" class="ml-1 btn btn-danger" (click)="eliminarFila(element)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-
                         <button *ngIf="element.pago!=undefined" type="button" class="ml-1 btn btn-success"
                             (click)="imprimerPago(element.pago.id)">
                             <i class="fas fa-print"></i>
                         </button>
+                        <button *ngIf="element.pago!=undefined" type="button" class="ml-1 btn btn-danger" (click)="eliminarFila(element)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button *ngIf="element.pago==undefined" type="button" class="ml-1 btn btn-danger" (click)="quitarFila(element)">
+                            <i class="fas fa-minus-circle"></i>
+                        </button>
+
                     </td>
                 </ng-container>
 

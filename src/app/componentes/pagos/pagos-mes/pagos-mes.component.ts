@@ -172,10 +172,30 @@ export class PagosMesComponent implements OnInit {
     return 2;
   }
 
-  eliminarFila(element:ClienteVO){
+  quitarFila(element: ClienteVO) {
     this.dataSource.data = this.dataSource.data.filter(item => element != item);
   }
 
+  eliminarFila(element: PagoDetalle) {
+    if (element.pago != undefined)
+      this._pagosService.eliminarPago(element?.pago).subscribe(then => {
+        this.quitarFila(element)
+      });
+  }
+
+  esPagoRequerido(fechaPago: string): boolean {
+    let fechaStr = fechaPago.split("-");
+    let fechaPrimerpago = new Date(Number(fechaStr[0]), Number(fechaStr[1]) - 1, 1);
+    let mesSelecionado = new Date(Number(this.mesSelecionado.split("-")[0]),Number(this.mesSelecionado.split("-")[1]),1);
+    console.log(fechaPrimerpago,Number(this.mesSelecionado.split("-")[0]))
+    if(fechaPrimerpago>mesSelecionado) return false;
+    return true;
+  }
+
+  formatoDefecha(pago:string):string{
+    let fecha=pago.split("-");
+    return fecha[2]+"-"+fecha[1]+"-"+fecha[0];
+  }
 
 
 
