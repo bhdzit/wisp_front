@@ -30,6 +30,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import {MatSortModule} from '@angular/material/sort';
 import {MatRadioModule} from '@angular/material/radio';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import {MatRadioModule} from '@angular/material/radio';
     ReactiveFormsModule,
     MatInputModule,
     MatSortModule,
-    MatRadioModule
+    MatRadioModule,
+    GoogleMapsModule
   ],
   providers: [AllHttpInterceptor,DeactivateGuard, {
     provide: MatDialogRef,
