@@ -11,7 +11,7 @@ import { NumberSymbol } from '@angular/common';
     styleUrls: ['./map-view.component.scss']
 })
 
-
+//https://developers.google.com/maps/documentation/javascript/examples/icon-simple ejemplos
 export class MapViewComponent implements OnInit {
 
     loader!: Loader;
