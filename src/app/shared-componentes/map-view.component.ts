@@ -55,10 +55,10 @@ export class MapViewComponent implements OnInit {
 
 
     async addOnTapMarck(cord: any) {
+        console.log(cord,this.isMapLoaded);
         if(!this.isMapLoaded) setTimeout(() => this.addOnTapMarck(cord), 1000);
         cord.lat=Number(cord.lat);
         cord.lng=Number(cord.lng);
-        console.log(cord,this.isMapLoaded);
 
         if(this.marker!=undefined)this.marker.setMap(null)
         const image =
