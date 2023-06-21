@@ -17,7 +17,8 @@ export class ClientesService {
   getClientes(): Observable<ClienteVO[]> {
     return this.http.get<ClienteVO[]>("api/clientes/getClientes", {}).pipe(map((clientes)=>clientes.map(cliente=> {
       if(cliente.primer_pago!=null){
-        let fechaStr=cliente.primer_pago.split("-");
+        let fechaStr=cliente.primer_pago.split("T");
+        fechaStr=fechaStr[0].split("-");
         let fecha=new Date(new Date(Number(fechaStr[0]),Number(fechaStr[1])-1,Number(fechaStr[2])));
         cliente.primer_pago=fecha.getFullYear()+"-"+("00"+(fecha.getMonth()+1)).slice(-2)+"-"+("00"+fecha.getDate()).slice(-2);
       }
@@ -32,7 +33,8 @@ export class ClientesService {
   saveClientes(clienteVO: ClienteVO): Observable<ClienteVO[]> {
     return this.http.post<ClienteVO[]>("api/clientes/saveCliente", clienteVO).pipe(map((clientes)=>clientes.map(cliente=> {
       if(cliente.primer_pago!=null){
-        let fechaStr=cliente.primer_pago.split("-");
+        let fechaStr=cliente.primer_pago.split("T");
+        fechaStr=fechaStr[0].split("-");
         let fecha=new Date(new Date(Number(fechaStr[0]),Number(fechaStr[1])-1,Number(fechaStr[2])));
         cliente.primer_pago=fecha.getFullYear()+"-"+("00"+(fecha.getMonth()+1)).slice(-2)+"-"+("00"+fecha.getDate()).slice(-2);
       }
@@ -43,7 +45,8 @@ export class ClientesService {
   updateCliente(clienteVO: ClienteVO): Observable<ClienteVO[]> {
     return this.http.put<ClienteVO[]>("api/Clientes/updateCliente", clienteVO).pipe(map((clientes)=>clientes.map(cliente=> {
       if(cliente.primer_pago!=null){
-        let fechaStr=cliente.primer_pago.split("-");
+        let fechaStr=cliente.primer_pago.split("T");
+        fechaStr=fechaStr[0].split("-");
         let fecha=new Date(new Date(Number(fechaStr[0]),Number(fechaStr[1])-1,Number(fechaStr[2])));
         cliente.primer_pago=fecha.getFullYear()+"-"+("00"+(fecha.getMonth()+1)).slice(-2)+"-"+("00"+fecha.getDate()).slice(-2);
       }
@@ -60,7 +63,8 @@ export class ClientesService {
     };
     return this.http.delete<ClienteVO[]>("api/Clientes/destroyCliente", options).pipe(map((clientes)=>clientes.map(cliente=> {
       if(cliente.primer_pago!=null){
-        let fechaStr=cliente.primer_pago.split("-");
+        let fechaStr=cliente.primer_pago.split("T");
+        fechaStr=fechaStr[0].split("-");
         let fecha=new Date(new Date(Number(fechaStr[0]),Number(fechaStr[1])-1,Number(fechaStr[2])));
         cliente.primer_pago=fecha.getFullYear()+"-"+("00"+(fecha.getMonth()+1)).slice(-2)+"-"+("00"+fecha.getDate()).slice(-2);
       }
