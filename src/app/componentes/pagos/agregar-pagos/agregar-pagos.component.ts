@@ -25,7 +25,7 @@ export interface PagoVO {
 
 export interface Extra {
   descripcion: string,
-  precio: number | null
+  costo: number | null
 }
 
 @Component({
@@ -131,7 +131,7 @@ export class AgregarPagosComponent implements OnInit {
   agregarExtra() {
     this.listaExtras.push({
       descripcion: '',
-      precio: null
+      costo: null
     });
   }
 
@@ -171,7 +171,7 @@ export class AgregarPagosComponent implements OnInit {
       initialValue
     );
     this.totalEnPagos = this.listaExtras.reduce(
-      (accumulator, extra) => accumulator + Number(extra.precio),
+      (accumulator, extra) => accumulator + Number(extra.costo),
       this.totalEnPagos
     );
   }
@@ -194,7 +194,7 @@ export class AgregarPagosComponent implements OnInit {
 
     this.isSubmit = true;
 
-    let extrasSinDatos = this.listaExtras.filter(extra => extra.descripcion == '' || extra.precio == null)
+    let extrasSinDatos = this.listaExtras.filter(extra => extra.descripcion == '' || extra.costo == null)
     if (extrasSinDatos.length > 0) return;
     if (this.validarSiExitePago()) return;
 
