@@ -31,6 +31,7 @@ export class PagosMesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   sortedData: PagoDetalle[] = [];
   filtroEnPagos: number = 1;
+  total: number = 0;
 
   constructor(public _dialog: MatDialog, private _pagosService: PagosService, private _clientesService: ClientesService, private _liveAnnouncer: LiveAnnouncer) { }
 
@@ -42,11 +43,13 @@ export class PagosMesComponent implements OnInit {
     this.mesSelecionado = new Date().getFullYear() + "-" + ("00" + (new Date().getMonth() + 1)).slice(-2);
     this._pagosService.getPagosDelMes(this.mesSelecionado).subscribe(then => {
       this.listaDePagos = then;
+      this._clientesService.getClientes().subscribe(then => {
+        this.listaDeClientes = then;
+        this.organizarDatos();
+      });
+
     });
-    this._clientesService.getClientes().subscribe(then => {
-      this.listaDeClientes = then;
-      this.organizarDatos();
-    });
+
 
   }
 
@@ -73,6 +76,7 @@ export class PagosMesComponent implements OnInit {
     this.listaDeClientesBkp = [...JSON.parse(JSON.stringify(this.listaDeClientes))];
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.getTotal();
   }
 
 
@@ -119,6 +123,8 @@ export class PagosMesComponent implements OnInit {
       data = data.filter(cliente => cliente.pago == undefined);
     if (this.filtroEnPagos == 3)
       data = data.filter(cliente => cliente?.pago?.costo != null && Number(cliente?.pago?.costo) == 0);
+    if (this.filtroEnPagos == 4)
+      data = data.filter(cliente => cliente.pago != undefined);
     // let sectores = this.listaFiltro.filter(item => item.tipoDeFiltro == "sector");
     // data = data.filter(cliente => sectores.some(sector => sector.id == cliente?.torre) || sectores.length == 0);
 
@@ -127,6 +133,8 @@ export class PagosMesComponent implements OnInit {
     // console.log(paquetes);
 
     this.dataSource.data = data;
+
+    this.getTotal();
 
   }
 
@@ -186,15 +194,30 @@ export class PagosMesComponent implements OnInit {
   esPagoRequerido(fechaPago: string): boolean {
     let fechaStr = fechaPago.split("-");
     let fechaPrimerpago = new Date(Number(fechaStr[0]), Number(fechaStr[1]) - 1, 1);
-    let mesSelecionado = new Date(Number(this.mesSelecionado.split("-")[0]),Number(this.mesSelecionado.split("-")[1]),1);
-    console.log(fechaPrimerpago,Number(this.mesSelecionado.split("-")[0]))
-    if(fechaPrimerpago>mesSelecionado) return false;
+    let mesSelecionado = new Date(Number(this.mesSelecionado.split("-")[0]), Number(this.mesSelecionado.split("-")[1]), 1);
+    if (fechaPrimerpago > mesSelecionado) return false;
     return true;
   }
 
-  formatoDefecha(pago:string):string{
-    let fecha=pago.split("-");
-    return fecha[2]+"-"+fecha[1]+"-"+fecha[0];
+  formatoDefecha(pago: string): string {
+    let fecha = pago.split("-");
+    return fecha[2] + "-" + fecha[1] + "-" + fecha[0];
+  }
+
+  getTotal() {
+
+    let pagos=this.dataSource.data.filter(cliente => cliente.pago != undefined);
+    this.total = pagos.reduce(
+      (accumulator, currentValue: any) => accumulator + (currentValue.pago.costo * 1),
+      0,
+    );
+
+    pagos.map((pago: any) => {
+      console.log(pago);
+      this.total += pago.pago?.extraVO.reduce((val1: any, val2: any) => val1 + (val2.costo * 1), 0);
+    }
+    );
+
   }
 
 

@@ -30,7 +30,8 @@
                 <div class="search-input mr-1">
                     <div class="input-group has-validation">
                         <select [(ngModel)]="filtroEnPagos" (change)="aplicarFiltro()" class="form-control">
-                            <option [value]="1">Todos los pagos</option>
+                            <option [value]="1">Todo</option>
+                            <option [value]="4">Solo Pagos</option>
                             <option [value]="2">Pendientes de Pago</option>
                             <option [value]="3">Meses Gratis</option>
                         </select>
@@ -139,7 +140,7 @@
                 <ng-container matColumnDef="total">
 
                     <td mat-footer-cell *matFooterCellDef [colSpan]="2">
-                        <h3> Total : $ 0.00</h3>
+                        <h3> Total : $ {{total}}</h3>
                     </td>
                 </ng-container>
 
