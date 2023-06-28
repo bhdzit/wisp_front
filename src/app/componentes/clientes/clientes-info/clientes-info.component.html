@@ -27,20 +27,7 @@
         </div>
     </div>
 
-    <div class="col-sm-4 mt-1">
-        <div class="input-group has-validation">
-            <input placeholder="Tel 1" type="text" class="form-control" [(ngModel)]="clienteVO.tel1"
-                [ngClass]="{'is-invalid':submitErrorMsg['tel1']}" aria-label="" aria-describedby="basic-addon1">
-            <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                {{submitErrorMsg['tel1']?.["msg"]}}
-            </div>
-        </div>
-    </div>
-
-
-
-
-    <div class="col-sm-4 mt-1">
+    <div class="col-sm-6 mt-1">
         <div class="input-group has-validation">
             <select class="form-control" [(ngModel)]="clienteVO.torre" [ngClass]="{'is-invalid':submitErrorMsg['torre']}">
                 <option [value]="null" disabled>-- Seleccionar torre</option>
@@ -52,7 +39,7 @@
         </div>
     </div>
 
-    <div class="col-sm-4 mt-1">
+    <div class="col-sm-6 mt-1">
         <div class="input-group has-validation">
             <select class="form-control" [(ngModel)]="clienteVO.paquete"  [ngClass]="{'is-invalid':submitErrorMsg['paquete']}">
                 <option value="null" disabled>-- Seleccionar paquete</option>
