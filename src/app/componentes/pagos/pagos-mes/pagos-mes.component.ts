@@ -125,6 +125,10 @@ export class PagosMesComponent implements OnInit {
       data = data.filter(cliente => cliente?.pago?.costo != null && Number(cliente?.pago?.costo) == 0);
     if (this.filtroEnPagos == 4)
       data = data.filter(cliente => cliente.pago != undefined);
+    if (this.filtroEnPagos == 5)
+      data = data.filter(cliente => cliente.pago != undefined && cliente.pago.referencia == null);
+    if (this.filtroEnPagos == 6)
+      data = data.filter(cliente => cliente.pago != undefined && cliente.pago.referencia != null);
     // let sectores = this.listaFiltro.filter(item => item.tipoDeFiltro == "sector");
     // data = data.filter(cliente => sectores.some(sector => sector.id == cliente?.torre) || sectores.length == 0);
 
@@ -206,7 +210,7 @@ export class PagosMesComponent implements OnInit {
 
   getTotal() {
 
-    let pagos=this.dataSource.data.filter(cliente => cliente.pago != undefined);
+    let pagos = this.dataSource.data.filter(cliente => cliente.pago != undefined);
     this.total = pagos.reduce(
       (accumulator, currentValue: any) => accumulator + (currentValue.pago.costo * 1),
       0,

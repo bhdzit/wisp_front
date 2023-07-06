@@ -32,6 +32,8 @@
                         <select [(ngModel)]="filtroEnPagos" (change)="aplicarFiltro()" class="form-control">
                             <option [value]="1">Todo</option>
                             <option [value]="4">Solo Pagos</option>
+                            <option [value]="5">Solo Efectivo</option>
+                            <option [value]="6">Solo Referencias</option>
                             <option [value]="2">Pendientes de Pago</option>
                             <option [value]="3">Meses Gratis</option>
                         </select>
