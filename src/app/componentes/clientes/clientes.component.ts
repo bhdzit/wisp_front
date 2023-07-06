@@ -27,7 +27,8 @@ export interface ClienteVO {
   editada: boolean;
   torresVO?: TorreVO | null;
   paqueteVO?: PaqueteVO | null;
-  contrato?: boolean | null
+  contrato?: boolean | null,
+  estatus?: boolean | null
 }
 
 @Component({
@@ -190,7 +191,7 @@ export class ClientesComponent implements OnInit {
 
 }
 
-function compare(a: number | string | null| undefined, b: number | string | null | undefined, isAsc: boolean) {
-  if(a==null||b==null) return 0;
+function compare(a: number | string | null | undefined, b: number | string | null | undefined, isAsc: boolean) {
+  if (a == null || b == null) return 0;
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

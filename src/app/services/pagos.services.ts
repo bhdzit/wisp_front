@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PaqueteVO } from '../componentes/paquetes/paquetes.component';
 import { Extra, PagoVO } from '../componentes/pagos/agregar-pagos/agregar-pagos.component';
+import { ClienteVO } from '../componentes/clientes/clientes.component';
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +23,10 @@ export class PagosService {
     getPagosDeCliente(cliente: any): Observable<PagoVO[]> {
         return this.http.post<PagoVO[]>("api/pagos/getPagosDeCliente", cliente);
     }
+    getClientesParaPago(): Observable<ClienteVO[]> {
+        return this.http.get<ClienteVO[]>("api/pagos/getClientesParaPago");
+    }
+
     validarReferencia(referencia: string): Observable<any> {
         return this.http.get<any>("api/pagos/validarReferencia?referencia="+referencia);
     }

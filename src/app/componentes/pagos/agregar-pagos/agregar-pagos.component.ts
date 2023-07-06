@@ -49,11 +49,11 @@ export class AgregarPagosComponent implements OnInit {
   listaExtras: Extra[] = [];
   isSubmit: boolean = false;
   primerPago!: Date;
-  constructor(private _clientesService: ClientesService, private _paquetesService: PaquetesService, private _pagosService: PagosService) {
+  constructor( private _paquetesService: PaquetesService, private _pagosService: PagosService) {
   }
 
   ngOnInit(): void {
-    this._clientesService.getClientes().subscribe(
+    this._pagosService.getClientesParaPago().subscribe(
       then => {
         this.listaDeClientes = then;
         this.filteredCliente = this.clienteCtrl.valueChanges.pipe(
@@ -71,6 +71,7 @@ export class AgregarPagosComponent implements OnInit {
 
   seSelecionoCliente(e: MatAutocompleteSelectedEvent) {
     this.clienteSelecionado = this.listaDeClientes.filter(cliente => (cliente?.id + "") == e.option.id)[0];
+    if(this.clienteSelecionado.estatus==null) this.mostrarMsj("Cliente esta en estatus de suspendido")
     this.listaDePagos = [];
     this.setPrimerPago();
     this.getPagosDeCliente();

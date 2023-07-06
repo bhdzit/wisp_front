@@ -37,8 +37,8 @@
                         <mat-label>Cliente</mat-label>
                         <input matInput aria-label="State" [matAutocomplete]="auto" [formControl]="clienteCtrl">
                         <mat-autocomplete #auto="matAutocomplete" (optionSelected)='seSelecionoCliente($event)'>
-                            <mat-option [id]="cliente.id+''" *ngFor="let cliente of filteredCliente | async"
-                                [value]="cliente.cliente">
+                            <mat-option [ngClass]="{'bg-warning':cliente.estatus == null}" [id]="cliente.id+''"
+                                *ngFor="let cliente of filteredCliente | async" [value]="cliente.cliente">
                                 <span>{{cliente.cliente}}</span> |
                                 <small>Torre: {{cliente?.torresVO?.nombre}}</small>
                             </mat-option>
@@ -123,19 +123,21 @@
                                 </i>
                             </td>
                             <td colspan="2">
-                                <input placeholder="Descripción" [(ngModel)]="extra.descripcion" class="form-control"  [ngClass]="{'is-invalid':extra.descripcion==''&&isSubmit}" name="descripcion1">
+                                <input placeholder="Descripción" [(ngModel)]="extra.descripcion" class="form-control"
+                                    [ngClass]="{'is-invalid':extra.descripcion==''&&isSubmit}" name="descripcion1">
                                 <div id="validationServerUsernameFeedback" class="invalid-feedback">
                                     La descripcion es requerida
                                 </div>
                             </td>
                             <td>
                                 <div class="d-flex"><label style="margin-top: 7px;"> $</label>
-                                    <input placeholder="Costo" [(ngModel)]="extra.costo" [ngClass]="{'is-invalid':extra.costo==null&&isSubmit}"
+                                    <input placeholder="Costo" [(ngModel)]="extra.costo"
+                                        [ngClass]="{'is-invalid':extra.costo==null&&isSubmit}"
                                         class="form-control extrasClient" name="costo1" (blur)="actualizarTotal()">
-                                        <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                                            El precio es requerido
-                                        </div>
-                                        
+                                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                        El precio es requerido
+                                    </div>
+
                                 </div>
                             </td>
                         </tr>
