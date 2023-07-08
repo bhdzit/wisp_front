@@ -153,7 +153,7 @@ export class PagosMesComponent implements OnInit {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'name':
-          return compare(a.name, b.name, isAsc);
+          return compare(a.cliente, b.cliente, isAsc);
         case 'mesPagado':
 
           return compare(this.getTipoPago(a.pago), this.getTipoPago(b.pago), isAsc);
