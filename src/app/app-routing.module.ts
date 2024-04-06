@@ -13,6 +13,7 @@ import { ClientesComponent } from './componentes/clientes/clientes.component';
 import { AgregarPagosComponent } from './componentes/pagos/agregar-pagos/agregar-pagos.component';
 import { PagosMesComponent } from './componentes/pagos/pagos-mes/pagos-mes.component';
 import { ReportePagosComponent } from './componentes/pagos/reporte-pagos/reporte-pagos.component';
+import { OltComponent } from './componentes/olt/olt.component';
 
 const routes: Routes = [
 
@@ -54,6 +55,11 @@ const routes: Routes = [
       {
         path: 'pagos/reporte_pago',
         component: ReportePagosComponent,
+        canDeactivate: [DeactivateGuard],
+      },
+      {
+        path:"olt",
+        component:OltComponent,
         canDeactivate: [DeactivateGuard],
       }
     ]

@@ -1,0 +1,25 @@
+<div class="row ml-2 mr-2 mt-4 mb-4">
+    <div class="col-sm-12">
+        <div class="input-group has-validation">
+            <div class="input-group-prepend">
+                <button class="btn btn-dark" type="button">Nombre</button>
+            </div>
+            <input [(ngModel)]="oltVO.nombre" type="text" class="form-control"
+                [ngClass]="{'is-invalid':submitErrorMsg['nombre']}" placeholder="" aria-label=""
+                aria-describedby="basic-addon1">
+            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                El nombre es Obligatoria
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <app-map-view (coordsChangeEvent)="coordsChangeEvent($event)" [punto]="oltVO"></app-map-view>
+        <div id="validationServerUsernameFeedback" class="invalid-feedback " [ngClass]="{'d-inline':submitErrorMsg['lat']}">
+            La Altura es Obligatoria
+        </div>
+    </div>
+
+    <button (click)="close()" type="submit" class="btn btn-danger ml-1">Cancelar</button>
+    <button (click)="guardarOLT()" type="submit" class="btn btn-primary ml-1">Guardar</button>
+</div>

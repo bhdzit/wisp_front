@@ -31,6 +31,9 @@ import { MatInputModule } from '@angular/material/input';
 import {MatSortModule} from '@angular/material/sort';
 import {MatRadioModule} from '@angular/material/radio';
 import { GoogleMapsModule } from '@angular/google-maps';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { OltComponent } from './componentes/olt/olt.component';
+import { OltInfoComponent } from './componentes/olt/olt-info/olt-info.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,9 @@ import { GoogleMapsModule } from '@angular/google-maps';
     AgregarPagosComponent,
     PagosMesComponent,
     ReportePagosComponent,
-    FiltroComponent
+    FiltroComponent,
+    OltComponent,
+    OltInfoComponent
 
   ],
   imports: [
@@ -66,7 +71,8 @@ import { GoogleMapsModule } from '@angular/google-maps';
     MatInputModule,
     MatSortModule,
     MatRadioModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    MatCheckboxModule
   ],
   providers: [AllHttpInterceptor,DeactivateGuard, {
     provide: MatDialogRef,

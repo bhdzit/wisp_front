@@ -1,0 +1,8 @@
+.search-input{
+    width: unset !important;
+    display: inline-block;
+}
+
+.options{
+    width: 10vw;
+}
