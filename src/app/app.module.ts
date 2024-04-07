@@ -34,6 +34,8 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { OltComponent } from './componentes/olt/olt.component';
 import { OltInfoComponent } from './componentes/olt/olt-info/olt-info.component';
+import { NapComponent } from './componentes/nap/nap.component';
+import { NapInfoComponent } from './componentes/nap/nap-info/nap-info.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { OltInfoComponent } from './componentes/olt/olt-info/olt-info.component'
     ReportePagosComponent,
     FiltroComponent,
     OltComponent,
-    OltInfoComponent
+    OltInfoComponent,
+    NapComponent,
+    NapInfoComponent
 
   ],
   imports: [

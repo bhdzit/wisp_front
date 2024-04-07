@@ -14,6 +14,7 @@ import { AgregarPagosComponent } from './componentes/pagos/agregar-pagos/agregar
 import { PagosMesComponent } from './componentes/pagos/pagos-mes/pagos-mes.component';
 import { ReportePagosComponent } from './componentes/pagos/reporte-pagos/reporte-pagos.component';
 import { OltComponent } from './componentes/olt/olt.component';
+import { NapComponent } from './componentes/nap/nap.component';
 
 const routes: Routes = [
 
@@ -60,6 +61,11 @@ const routes: Routes = [
       {
         path:"olt",
         component:OltComponent,
+        canDeactivate: [DeactivateGuard],
+      },
+      {
+        path:"nap",
+        component:NapComponent,
         canDeactivate: [DeactivateGuard],
       }
     ]
