@@ -11,9 +11,10 @@ import { MatDialog } from '@angular/material/dialog';
 
 export interface NapVO {
   id?: number;
-  referencia?: string,
+  color?: string,
   puerto?: string,
   numero?: string,
+  olt?:number,
   lat?: string,
   lng?: string,
 }
@@ -27,7 +28,7 @@ export class NapComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['position', 'referencia', 'puerto', 'numero', 'opciones'];
+  displayedColumns: string[] = ['position', 'olt','referencia', 'puerto', 'numero', 'opciones'];
   dataSource: MatTableDataSource<NapVO> = new MatTableDataSource();
 
   filtradoTxt:string="";

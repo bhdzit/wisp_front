@@ -3,6 +3,8 @@ import { NapVO } from '../nap.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NapService } from 'src/app/services/nap.services';
 import { MapViewComponent } from 'src/app/shared-componentes/map-view.component';
+import { OltVO } from '../../olt/olt.component';
+import { OLTSService } from 'src/app/services/olts.services';
 
 @Component({
   selector: 'app-nap-info',
@@ -15,16 +17,19 @@ export class NapInfoComponent implements OnInit, AfterViewInit {
 
   napVO!:NapVO;
   submitErrorMsg: any = {};
+  oltArray:OltVO[] = [];
+
   constructor(public dialog: MatDialogRef<NapInfoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: NapVO,
-    private _NapService: NapService) { }
+    private _NapService: NapService,
+    private _OLTSService:OLTSService) { }
   @ViewChild(MapViewComponent) _mapComponent: MapViewComponent | undefined;
   ngOnInit(): void {
-    this.napVO = this.data || {};
+    this.napVO = this.data || {olt:null};    
+    this.getOlts();
   }
 
   ngAfterViewInit(): void {
-    console.log(this._mapComponent);
     if (this.data != null)
       this._mapComponent?.addOnTapMarck({ lat: this.data.lat, lng: this.data.lng })
   }
@@ -53,7 +58,6 @@ export class NapInfoComponent implements OnInit, AfterViewInit {
   }
 
   coordsChangeEvent(evt: any) {
-    console.log(evt.lat)
     this.napVO.lat = evt.lat;
     this.napVO.lng = evt.lng;
   }
@@ -62,5 +66,10 @@ export class NapInfoComponent implements OnInit, AfterViewInit {
     this.dialog.close();
   }
 
+  getOlts(){
+   this._OLTSService.getOlts().subscribe(then=>{
+      this.oltArray = then;
+    });
+  }
 
 }

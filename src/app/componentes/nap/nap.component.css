@@ -2,3 +2,8 @@
     width: unset !important;
     display: inline-block;
 }
+.color-div{
+    width: 2vw;
+    height: 2vw;
+    border-radius: 50%;
+}

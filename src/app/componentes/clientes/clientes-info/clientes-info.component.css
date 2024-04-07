@@ -9,3 +9,9 @@
     right: 25px;
     top: 10px;
 }
+
+.color-div{
+    width: 2vw;
+    height: 2vw;
+    border-radius: 50%;
+}

@@ -1,11 +1,23 @@
 <div class="row ml-2 mr-2 mt-4 mb-4">
-    <div class="col-sm-4">
+    <div class="col-sm-6">
+        <div class="input-group has-validation">
+            <select class="form-control" [(ngModel)]="napVO.olt"
+            [ngClass]="{'is-invalid':submitErrorMsg['paquete']}">
+            <option [value]="null" disabled>-- Seleccionar OLT</option>
+            <option *ngFor="let olt of oltArray" [value]="olt.id">{{olt.nombre}}</option>
+        </select>
+            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                El referencia es Obligatoria
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
         <div class="input-group has-validation">
             <div class="input-group-prepend">
-                <button class="btn btn-dark" type="button">Referencia</button>
+                <button class="btn btn-dark" type="button">Color</button>
             </div>
-            <input [(ngModel)]="napVO.referencia" type="text" class="form-control"
-                [ngClass]="{'is-invalid':submitErrorMsg['referencia']}" placeholder="" aria-label=""
+            <input placeholder="Color" [(ngModel)]="napVO.color" type="color" class="form-control"
+                [ngClass]="{'is-invalid':submitErrorMsg['color']}" placeholder="" aria-label=""
                 aria-describedby="basic-addon1">
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                 El referencia es Obligatoria
@@ -13,7 +25,7 @@
         </div>
     </div>
 
-    <div class="col-sm-4">
+    <div class="col-sm-6 mt-3">
         <div class="input-group has-validation">
             <div class="input-group-prepend">
                 <button class="btn btn-dark" type="button">Puerto PON</button>
@@ -27,7 +39,7 @@
         </div>
     </div>
 
-    <div class="col-sm-4">
+    <div class="col-sm-6 mt-3">
         <div class="input-group has-validation">
             <div class="input-group-prepend">
                 <button class="btn btn-dark" type="button"># NAP</button>
