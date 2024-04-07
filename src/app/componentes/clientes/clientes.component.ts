@@ -28,7 +28,13 @@ export interface ClienteVO {
   torresVO?: TorreVO | null;
   paqueteVO?: PaqueteVO | null;
   contrato?: boolean | null,
-  estatus?: boolean | null
+  estatus?: boolean | null,
+  tipoConexion:number|null
+  servicioExtra:boolean|null,
+  password?:string,
+  usuario?:string,
+  olt?:number | null,
+  nap?:number | null
 }
 
 @Component({

@@ -11,6 +11,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MapViewComponent } from 'src/app/shared-componentes/map-view.component';
 import { TorresService } from 'src/app/services/torres.services';
 import { TorreVO } from '../../torre/torre.component';
+import { OltVO } from '../../olt/olt.component';
+import { NapVO } from '../../nap/nap.component';
+import { OLTSService } from 'src/app/services/olts.services';
+import { NapService } from 'src/app/services/nap.services';
 @Component({
   selector: 'app-clientes-info',
   templateUrl: './clientes-info.component.html',
@@ -25,15 +29,27 @@ export class ClientesInfoComponent implements OnInit, AfterViewInit {
     primer_pago: null,
     nueva: false,
     editada: false,
-    contrato:null
+    contrato:null,
+    tipoConexion:null,
+    servicioExtra:true,
+    olt:null,
+    nap:null
   };
 
   paquetesArr: PaqueteVO[] = [];
   torreArr: TorreVO[] = [];
+  oltArray:OltVO[]=[];
+  napArray:NapVO[]=[];
+  showPassword:boolean = false;
 
   @ViewChild(MapViewComponent) _mapComponent: MapViewComponent | undefined;
 
-  constructor(public dialog: MatDialogRef<ClientesInfoComponent>, @Inject(MAT_DIALOG_DATA) public data: ClienteVO, private _paquetesService: PaquetesService,  private _clientesService: ClientesService,private _torresService:TorresService) { }
+  constructor(public dialog: MatDialogRef<ClientesInfoComponent>, @Inject(MAT_DIALOG_DATA) public data: ClienteVO, 
+  private _paquetesService: PaquetesService, 
+  private _clientesService: ClientesService,
+  private _torresService:TorresService,
+  private _OLTSService:OLTSService,
+  private _NapService:NapService) { }
   ngAfterViewInit(): void {
     if (this.data != null)
       this._mapComponent?.addOnTapMarck({ lat: this.data.lat, lng: this.data.lng })
@@ -52,15 +68,24 @@ export class ClientesInfoComponent implements OnInit, AfterViewInit {
     }));
 
 
+    let natServices =     this._NapService.getNaps().pipe(map(then=>{
+      this.napArray = then;
+    }));
+
+    let oltServices =     this._OLTSService.getOlts().pipe(map(then=>{
+      this.oltArray = then;
+    }));
+
+
     listaDeServicios.push(serviciosPaquetes);
     listaDeServicios.push(sectorsService);
+    listaDeServicios.push(natServices);
+    listaDeServicios.push(oltServices);
 
     concat(...listaDeServicios).subscribe(
       res => console.log("next", res),
       err => console.log("error", err),
       () => {
-
-        console.log("complete")
       }
     );
 
@@ -70,8 +95,14 @@ export class ClientesInfoComponent implements OnInit, AfterViewInit {
       primer_pago: null,
       nueva: false,
       editada: false,
-      contrato:null
+      contrato:null,
+      tipoConexion:null,
+      olt:null,
+      nap:null
     };
+
+    console.log(this.clienteVO);
+    
 
 
   }
@@ -120,6 +151,20 @@ export class ClientesInfoComponent implements OnInit, AfterViewInit {
 
     return !(Number.isNaN(Number(key)));
     //input.value += key;
+  }
+
+  getNap(){
+
+  }
+
+  getOlt(){
+    this._OLTSService.getOlts().subscribe(then=>{
+      this.oltArray = then;
+    });
+  }
+
+  close(){
+    this.dialog.close();
   }
 
 }

@@ -49,6 +49,8 @@ export class AgregarPagosComponent implements OnInit {
   listaExtras: Extra[] = [];
   isSubmit: boolean = false;
   primerPago!: Date;
+  hasExtra:boolean = false;
+  extraCost:string="100";
   constructor( private _paquetesService: PaquetesService, private _pagosService: PagosService) {
   }
 
@@ -71,6 +73,8 @@ export class AgregarPagosComponent implements OnInit {
 
   seSelecionoCliente(e: MatAutocompleteSelectedEvent) {
     this.clienteSelecionado = this.listaDeClientes.filter(cliente => (cliente?.id + "") == e.option.id)[0];
+    this. hasExtra = this.clienteSelecionado.servicioExtra
+    
     if(this.clienteSelecionado.estatus==null) this.mostrarMsj("Cliente esta en estatus de suspendido")
     this.listaDePagos = [];
     this.setPrimerPago();
@@ -143,11 +147,8 @@ export class AgregarPagosComponent implements OnInit {
   }
 
   setPrimerPago() {
-    console.log(this.clienteSelecionado.primer_pago);
     let fechaStr = this.clienteSelecionado.primer_pago.split("-");
     this.primerPago = new Date(fechaStr[0], (fechaStr[1] - 1), fechaStr[2])
-    console.log(this.primerPago)
-
   }
 
   cambioDePaquete(evt: Event, pagoSelecionado: PagoVO) {
@@ -167,6 +168,7 @@ export class AgregarPagosComponent implements OnInit {
 
   actualizarTotal() {
     let initialValue = 0;
+    if(this.hasExtra)initialValue += Number(this.extraCost);    
     this.totalEnPagos = this.listaDePagos.reduce(
       (accumulator, pago) => accumulator + Number(pago.costo),
       initialValue
@@ -282,6 +284,5 @@ export class AgregarPagosComponent implements OnInit {
     if (!this.esReferenciaCheck)
       this.listaDePagos.map(pago => { pago.referencia = undefined; return pago })
   }
-
 
 }

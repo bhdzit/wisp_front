@@ -1,0 +1,11 @@
+::ng-deep .mdc-form-field label{
+    padding-top: 8px;
+}
+
+
+.input-group i{
+    cursor: pointer;
+    position: relative;
+    right: 25px;
+    top: 10px;
+}

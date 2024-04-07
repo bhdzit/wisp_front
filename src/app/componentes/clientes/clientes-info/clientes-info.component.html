@@ -5,8 +5,9 @@
     <div class="col-sm-7">
         <div class="input-group has-validation">
 
-            <input #input placeholder="Usuario" type="text" class="form-control" [(ngModel)]="clienteVO.cliente" [value]="input.value.toUpperCase()"
-                [ngClass]="{'is-invalid':submitErrorMsg['cliente']}" aria-label="" aria-describedby="basic-addon1">
+            <input #input placeholder="Usuario" type="text" class="form-control" [(ngModel)]="clienteVO.cliente"
+                [value]="input.value.toUpperCase()" [ngClass]="{'is-invalid':submitErrorMsg['cliente']}" aria-label=""
+                aria-describedby="basic-addon1">
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                 {{submitErrorMsg['cliente']?.["msg"]}}
             </div>
@@ -15,11 +16,12 @@
 
     <div class="col-sm-5 mt-1">
         <div class="input-group has-validation">
-            <select class="form-control" [(ngModel)]="clienteVO.contrato"  [ngClass]="{'is-invalid':submitErrorMsg['paquete']}">
+            <select class="form-control" [(ngModel)]="clienteVO.contrato"
+                [ngClass]="{'is-invalid':submitErrorMsg['paquete']}">
                 <option [value]="null" disabled>-- Tipo de contrato</option>
-                <option [value]="false" >Prepago</option>
-                <option [value]="true" >Arrendamiento</option>
-               
+                <option [value]="false">Prepago</option>
+                <option [value]="true">Arrendamiento</option>
+
             </select>
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                 {{submitErrorMsg['contrato']?.["msg"]}}
@@ -27,9 +29,26 @@
         </div>
     </div>
 
-    <div class="col-sm-6 mt-1">
+    <div class="col-sm-12 mt-1">
         <div class="input-group has-validation">
-            <select class="form-control" [(ngModel)]="clienteVO.torre" [ngClass]="{'is-invalid':submitErrorMsg['torre']}">
+            <select class="form-control" [(ngModel)]="clienteVO.tipoConexion"
+                [ngClass]="{'is-invalid':submitErrorMsg['tipoConexion']}">
+                <option [value]="null" disabled>-- Tipo de Conexion</option>
+                <option [value]="1">Inalambrico</option>
+                <option [value]="2">Fibra Optica</option>
+                <option [value]="3">Ambos</option>
+
+            </select>
+            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                {{submitErrorMsg['tipoConexion']?.["msg"]}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 mt-1" *ngIf="clienteVO.tipoConexion!=2&&clienteVO.tipoConexion!=null">
+        <div class="input-group has-validation">
+            <select class="form-control" [(ngModel)]="clienteVO.torre"
+                [ngClass]="{'is-invalid':submitErrorMsg['torre']}">
                 <option [value]="null" disabled>-- Seleccionar torre</option>
                 <option *ngFor="let torre of torreArr" [value]="torre.id">{{torre.nombre}}</option>
             </select>
@@ -41,8 +60,9 @@
 
     <div class="col-sm-6 mt-1">
         <div class="input-group has-validation">
-            <select class="form-control" [(ngModel)]="clienteVO.paquete"  [ngClass]="{'is-invalid':submitErrorMsg['paquete']}">
-                <option value="null" disabled>-- Seleccionar paquete</option>
+            <select class="form-control" [(ngModel)]="clienteVO.paquete"
+                [ngClass]="{'is-invalid':submitErrorMsg['paquete']}">
+                <option [value]="null" disabled>-- Seleccionar paquete</option>
                 <option *ngFor="let paquete of paquetesArr" [value]="paquete.id">{{paquete.name}}</option>
             </select>
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
@@ -54,12 +74,11 @@
         <label>Primer pago:</label>
     </div>
     <div class="col-sm-4 mt-1">
-       
+
         <div class="form-group">
             <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                <input [(ngModel)]="clienteVO.primer_pago"  type="date" class="form-control datetimepicker-input"
-                [ngClass]="{'is-invalid':submitErrorMsg['primer_pago']}"
-                data-target="#reservationdate">
+                <input [(ngModel)]="clienteVO.primer_pago" type="date" class="form-control datetimepicker-input"
+                    [ngClass]="{'is-invalid':submitErrorMsg['primer_pago']}" data-target="#reservationdate">
 
                 <div id="validationServerUsernameFeedback" class="invalid-feedback">
                     {{submitErrorMsg['primer_pago']?.["msg"]}}
@@ -68,14 +87,72 @@
         </div>
     </div>
 
-    <div class="col-sm-12"> 
+
+    <div class="col-sm-12" *ngIf="clienteVO.tipoConexion!=1&&clienteVO.tipoConexion!=null">
+        <section class="example-section">
+            <mat-checkbox class="example-margin" [(ngModel)]="clienteVO.servicioExtra"> Servicio Extra</mat-checkbox>
+        </section>
+    </div>
+    <ng-container *ngIf="clienteVO.servicioExtra">
+        <div class="col-sm-6">
+            <div class="input-group has-validation">
+                <input #input placeholder="Usuario" type="text" class="form-control" [(ngModel)]="clienteVO.usuario"
+                    [value]="input.value.toUpperCase()" [ngClass]="{'is-invalid':submitErrorMsg['cliente']}"
+                    aria-label="" aria-describedby="basic-addon1">
+                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                    {{submitErrorMsg['cliente']?.["msg"]}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="input-group has-validation">
+                <input #input placeholder="Contraseña" [type]="showPassword?'text':'password'" class="form-control"
+                    [(ngModel)]="clienteVO.password" [value]="input.value.toUpperCase()"
+                    [ngClass]="{'is-invalid':submitErrorMsg['cliente']}" aria-label="" aria-describedby="basic-addon1">
+                <i (click)="showPassword=!showPassword" [class]="showPassword?'fas fa-eye-slash':'far fa-eye'"></i>
+                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                    {{submitErrorMsg['cliente']?.["msg"]}}
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="clienteVO.tipoConexion!=1&&clienteVO.tipoConexion!=null">
+        <div class="col-sm-12 mt-2">
+            <div class="input-group has-validation">
+                <select class="form-control" [(ngModel)]="clienteVO.olt"
+                    [ngClass]="{'is-invalid':submitErrorMsg['paquete']}">
+                    <option [value]="null" disabled>-- Seleccionar OLT</option>
+                    <option *ngFor="let olt of oltArray" [value]="olt.id">{{olt.nombre}}</option>
+                </select>
+                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                    {{submitErrorMsg['cliente']?.["msg"]}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 mt-2">
+            <div class="input-group has-validation">
+                <select class="form-control" [(ngModel)]="clienteVO.nap"
+                    [ngClass]="{'is-invalid':submitErrorMsg['paquete']}">
+                    <option [value]="null" disabled>-- Seleccionar NAP</option>
+                    <option *ngFor="let nap of napArray" [value]="nap.id">{{nap.referencia}} - {{nap.puerto}} - {{nap.numero}}</option>
+                </select>
+                <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                    {{submitErrorMsg['cliente']?.["msg"]}}
+                </div>
+            </div>
+        </div>
+
+
+    </ng-container>
+    <div class="col-sm-12">
         <app-map-view (coordsChangeEvent)="coordsChangeEvent($event)" [punto]="clienteVO"></app-map-view>
         <div id="validationServerUsernameFeedback" class="invalid-feedback "
             [ngClass]="{'d-inline':submitErrorMsg['lat']}">
             {{submitErrorMsg['lat']?.["msg"]}}
         </div>
     </div>
-
-
-    <button type="submit" class="btn btn-primary ml-1" (click)="guardarCliente()" >Guardar</button>
+    <button (click)="close()" type="submit" class="btn btn-danger ml-1">Cancelar</button>
+    <button type="submit" class="btn btn-primary ml-1" (click)="guardarCliente()">Guardar</button>
 </div>

@@ -144,6 +144,27 @@
                     </tbody>
                     <tfoot>
                         <tr>
+                            <td></td>
+                            <td>SERVICIO EXTRA</td>
+                            <td>
+                                <section class="example-section">
+                                    <mat-checkbox class="example-margin" [(ngModel)]="hasExtra" (change)="actualizarTotal()" ></mat-checkbox>
+                                  </section>
+                            </td>
+                            <td>
+                                <div class="d-flex"><label style="margin-top: 7px;"> $</label>
+                                    <input placeholder="Costo" 
+                                       [(ngModel)]="extraCost"
+                                       (blur)="actualizarTotal()"
+                                        class="form-control extrasClient" name="costo1" (blur)="actualizarTotal()">
+                                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                        El precio es requerido
+                                    </div>
+
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
 
                             <td colspan="3"><b>TOTAL : </b></td>
                             <td><b id="totalPay">$ {{totalEnPagos}}</b></td>
