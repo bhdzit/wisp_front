@@ -17,6 +17,7 @@ export interface NapVO {
   olt?:number,
   lat?: string,
   lng?: string,
+  oltVO?:any
 }
 
 @Component({
