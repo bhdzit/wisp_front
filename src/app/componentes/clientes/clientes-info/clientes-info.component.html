@@ -107,8 +107,8 @@
 
         <div class="col-sm-6">
             <div class="input-group has-validation">
-                <input #input placeholder="Contraseña" [type]="showPassword?'text':'password'" class="form-control"
-                    [(ngModel)]="clienteVO.password" [value]="input.value.toUpperCase()"
+                <input placeholder="Contraseña" [type]="showPassword?'text':'password'" class="form-control"
+                    [(ngModel)]="clienteVO.password" 
                     [ngClass]="{'is-invalid':submitErrorMsg['cliente']}" aria-label="" aria-describedby="basic-addon1">
                 <i (click)="showPassword=!showPassword" [class]="showPassword?'fas fa-eye-slash':'far fa-eye'"></i>
                 <div id="validationServerUsernameFeedback" class="invalid-feedback">
