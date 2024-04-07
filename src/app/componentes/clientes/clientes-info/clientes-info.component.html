@@ -137,7 +137,7 @@
                     [ngClass]="{'is-invalid':submitErrorMsg['paquete']}">
                     <option [value]="null" disabled>-- Seleccionar NAP</option>
                     <ng-container *ngFor="let nap of napArray">
-                        <option  *ngIf="nap.olt==clienteVO.olt" [value]="nap.id"> <div class="color-div" [style.background]="nap.color"></div> - Puerto{{ nap.puerto}} - #{{nap.numero}}</option>
+                        <option  *ngIf="nap.olt==clienteVO.olt" [value]="nap.id" [style.background]="nap.color"> Puerto{{ nap.puerto}} - #{{nap.numero}}</option>
                     </ng-container>
                 </select>
                 <div id="validationServerUsernameFeedback" class="invalid-feedback">
