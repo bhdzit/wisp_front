@@ -14,9 +14,9 @@
     <div class="col-sm-6">
         <div class="input-group has-validation">
             <div class="input-group-prepend">
-                <button class="btn btn-dark" type="button">Color</button>
+                <button class="btn btn-dark" type="button">Color NAP</button>
             </div>
-            <input placeholder="Color" [(ngModel)]="napVO.color" type="color" class="form-control"
+            <input placeholder="Color" [(ngModel)]="napVO.colorNAP" type="color" class="form-control"
                 [ngClass]="{'is-invalid':submitErrorMsg['color']}" placeholder="" aria-label=""
                 aria-describedby="basic-addon1">
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
@@ -35,6 +35,20 @@
                 aria-describedby="basic-addon1">
             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                 La Puerto PON es Obligatorio
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 mt-3">
+        <div class="input-group has-validation">
+            <div class="input-group-prepend">
+                <button class="btn btn-dark" type="button">Color PON</button>
+            </div>
+            <input placeholder="Color" [(ngModel)]="napVO.colorPuerto" type="color" class="form-control"
+                [ngClass]="{'is-invalid':submitErrorMsg['color']}" placeholder="" aria-label=""
+                aria-describedby="basic-addon1">
+            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                El referencia es Obligatoria
             </div>
         </div>
     </div>

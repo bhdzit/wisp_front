@@ -11,13 +11,14 @@ import { MatDialog } from '@angular/material/dialog';
 
 export interface NapVO {
   id?: number;
-  color?: string,
+  colorNAP?: string,
   puerto?: string,
   numero?: string,
   olt?:number,
   lat?: string,
   lng?: string,
-  oltVO?:any
+  oltVO?:any,
+  colorPuerto:string
 }
 
 @Component({
